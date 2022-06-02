@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import { errorHandler } from './middleware/errorMiddleware.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import categoryRouter from './routes/categoryRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -27,6 +28,7 @@ app.use(cors())
 
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
+app.use('/api/category', categoryRouter)
 
 app.use(errorHandler)
 
