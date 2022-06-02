@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    .btn__style {
+        @apply text-white rounded-lg text-2xl font-normal hover:bg-gray-600 py-3;
+    }
+}
+
+* {
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    color: var(--black);
+}
+
+*::selection {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+*::-webkit-scrollbar {
+    height: .5rem;
+    width: 1rem;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--green);
+}
+
+body {
+    background-color: var(--light-bg);
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+}
+
+.userProfile {
+    margin-top: 4rem;
+    animation: fadeUp .2s ease-in-out forwards;
+}
+
+@keyframes fadeUp {
+    100% {
+        margin-top: 2.5rem;
+    }
+}
+
+.banner {
+    background: url('home-bg.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+}
