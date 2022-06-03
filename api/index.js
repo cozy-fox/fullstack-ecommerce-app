@@ -8,6 +8,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import categoryRouter from './routes/categoryRoutes.js'
 import productRouter from './routes/productRoutes.js'
+import wishlistRouter from './routes/wishlistRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -31,6 +32,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/product', productRouter)
+app.use('/api/wishlist', wishlistRouter)
 
 app.use(errorHandler)
 

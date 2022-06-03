@@ -19,9 +19,9 @@ export function verifyToken(req, res) {
 }
 
 export function verifyUser(req, res, next) {
-    const { id } = req.params
+    const { userId } = req.params
     verifyToken(req, res)
-    if (req.user.id === id || req.user.isAdmin) {
+    if (req.user.id === userId || req.user.isAdmin) {
         next()
     } else {
         res.status(403)
