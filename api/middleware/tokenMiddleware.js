@@ -9,13 +9,13 @@ export function verifyToken(req, res) {
         throw new Error('You are not authenticated')
     }
 
-    const user = jwt.verify(token, process.env.JWT_SECRET)
-    if (!user) {
-        res.status(403)
-        throw new Error('Invalid token')
-    }
-
-    req.user = user
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            res.status(403)
+            throw new Error('Invalid token')
+        }
+        req.user = user
+    })
 }
 
 export function verifyUser(req, res, next) {

@@ -5,7 +5,8 @@ import Category from '../models/categoryModel.js'
 // @route  GET api/category/
 // @access Public
 export const getCategories = asyncHandler(async (req, res) => {
-    res.send('hello from category controller')
+    const allCategories = await Category.find()
+    res.status(200).json(allCategories)
 })
 
 // @desc   create a category
@@ -17,6 +18,6 @@ export const createCategory = asyncHandler(async (req, res) => {
     if (description) {
         cat.description = description
     }
-    cat = await cat.save()
-    res.send(cat)
+    await cat.save()
+    res.status(200).json("Successfully created the category")
 })

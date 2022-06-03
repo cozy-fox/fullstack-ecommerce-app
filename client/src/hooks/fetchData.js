@@ -6,13 +6,13 @@ export function useFetch(url) {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        async function getCats() {
+        async function fetchData() {
             setIsLoading(true)
             const res = await axios.get(url)
             setData(res.data)
             setIsLoading(false)
         }
-        getCats()
+        fetchData()
     }, [])
 
     async function reFetch() {

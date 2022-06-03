@@ -1,29 +1,47 @@
-import mongoose from "mongoose"
-import slugify from "slugify"
+import mongoose from 'mongoose'
+import slugify from 'slugify'
 
-const categoriesSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
-        minLength: 4,
+        required: true
     },
     slug: {
         type: String,
-        unique: true,
+        required: true,
+        unique: true
+    },
+    inStock: {
+        type: Number,
         required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    productImage: {
+        type: String,
+        required: true,
+    },
+    categories: {
+        type: [String],
+        validate: {
+            validator: v => v.length > 0 && v[0].length > 0,
+            message: props => "At least one category is needed"
+        }
     },
     description: {
         type: String,
         minLength: 10,
-        maxLength: 100
+        maxLength: 500
     },
-    image: {
-        type: String,
-        required: true,
+    latest: {
+        type: Boolean,
+        required: true
     }
-}, { timestamps: true })
+})
 
-categoriesSchema.pre('validate', function (next) {
+productSchema.pre('validate', function (next) {
     if (this.title) {
         this.slug = slugify(this.title, { lower: true, strict: true })
         const newTitle = this.title.trim().replace(/\s+/g, " ")
@@ -41,4 +59,4 @@ categoriesSchema.pre('validate', function (next) {
     next()
 })
 
-export default mongoose.model('Category', categoriesSchema)
+export default mongoose.model('Product', productSchema)

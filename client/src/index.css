@@ -8,6 +8,18 @@
     }
 }
 
+:root {
+    --green: #27ae60;
+    --orange: #f39c12;
+    --red: #e74c3c;
+    --black: #333;
+    --light-color: #666;
+    --white: #fff;
+    --light-bg: #f6f6f6;
+    --border: .2rem solid var(--black);
+    --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+}
+
 * {
     font-family: 'Rubik', sans-serif;
     margin: 0;
