@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import { UserIcon, SearchIcon, HeartIcon, ShoppingCartIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../slices/authSlice'
+import { wishProducts } from '../slices/wishSlice'
 
 export default function MainHeader() {
     const [showUser, setShowUser] = useState(false)
     const { user } = useSelector(state => state.auth)
+    const { wishlist } = useSelector(state => state.wishList)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (user) {
+            dispatch(wishProducts())
+        }
+    }, [user, dispatch])
 
     function logoutUser() {
         dispatch(logout())
@@ -60,7 +68,7 @@ export default function MainHeader() {
                                     <Link to="/wishlist">
                                         <div className="flex text-xl text-gray-500 items-end group hover:text-green-500 transition-all cursor-pointer">
                                             <HeartIcon className="w-9 h-9 fill-gray-500 group-hover:fill-green-500 transition-all" />
-                                            (<span className="text-gray-500 group-hover:text-green-500 transition-all">0</span>)
+                                            (<span className="text-gray-500 group-hover:text-green-500 transition-all">{wishlist.length}</span>)
                                         </div>
                                     </Link>
                                     <Link to="/cart">

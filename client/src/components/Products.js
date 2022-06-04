@@ -1,11 +1,27 @@
+import { useEffect } from 'react'
 import SecTitle from './SecTitle'
 import { Link } from 'react-router-dom'
 import { EyeIcon } from '@heroicons/react/solid'
 import Loader from './Loader'
 import { useFetch } from '../hooks/fetchData'
+import { useSelector, useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { addInWishlist, resetState } from '../slices/wishSlice'
 
 export default function Products() {
     const { data: latestProducts, isLoading } = useFetch('/product/?latest=true')
+    const { message, success, error } = useSelector(state => state.wishList)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (success) toast(message, { type: 'success', autoClose: 2000 })
+        if (error) toast(message, { type: 'error', autoClose: 2000 })
+        dispatch(resetState())
+    }, [message, success, error, dispatch])
+
+    function wishlist(productId) {
+        dispatch(addInWishlist(productId))
+    }
 
     return (
         <section className="section py-10">
@@ -30,7 +46,7 @@ export default function Products() {
                                     </div>
                                     <h3 className="font-semibold text-xl text-gray-500 text-center py-4 lowercase">{product.title}</h3>
                                     <input type="number" className="w-full border-2 border-solid border-gray-800 rounded-lg p-3 text-xl text-gray-700 font-medium" min="1" max={product.inStock} defaultValue="1" />
-                                    <button className="w-full bg-yellow-500 btn__style mt-4 mb-3 capitalize">add to wishlist</button>
+                                    <button className="w-full bg-yellow-500 btn__style mt-4 mb-3 capitalize" onClick={() => wishlist(product._id)}>add to wishlist</button>
                                     <button className="w-full bg-green-500 btn__style capitalize">add to cart</button>
                                 </div>
                             ))}

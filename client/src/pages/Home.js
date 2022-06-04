@@ -2,6 +2,7 @@ import MainHeader from "../components/MainHeader"
 import Banner from "../components/Banner"
 import Categories from "../components/Categories"
 import Products from "../components/Products"
+import MainFooter from "../components/MainFooter"
 
 export default function Home() {
     return (
@@ -10,9 +11,7 @@ export default function Home() {
             <Banner />
             <Categories />
             <Products />
-            {/* 
-            <MainFooter /> 
-            */}
+            <MainFooter />
         </>
     )
 }

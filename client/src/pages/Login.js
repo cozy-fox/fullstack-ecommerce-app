@@ -16,13 +16,12 @@ export default function Login() {
     useEffect(() => {
         if (error) {
             toast(message, { type: 'error', autoClose: 2000 })
-            dispatch(resetState())
         }
         if (success || user) {
             reset()
             navigate('/')
-            dispatch(resetState())
         }
+        dispatch(resetState())
     }, [user, message, error, success, dispatch, navigate, reset])
 
     async function loginUser(data) {

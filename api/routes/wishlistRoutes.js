@@ -4,7 +4,7 @@ import { verifyUser } from '../middleware/tokenMiddleware.js'
 
 const router = express.Router()
 
-router.get('/:userId', getWishlists)
+router.get('/:userId', verifyUser, getWishlists)
 router.get('/:userId/:productId', verifyUser, createWishlist)
 
 export default router
