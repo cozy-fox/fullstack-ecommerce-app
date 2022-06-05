@@ -15,5 +15,10 @@ async function deleteProductFromWishlist(url) {
     return res.data
 }
 
-const wishService = { addToWishlist, ProductsFromWishlist, deleteProductFromWishlist }
+async function clearWishlist(url) {
+    const res = await axios.delete(url)
+    return res.data
+}
+
+const wishService = { addToWishlist, ProductsFromWishlist, deleteProductFromWishlist, clearWishlist }
 export default wishService

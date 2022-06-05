@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { EyeIcon, XIcon } from '@heroicons/react/solid'
 import Loader from './Loader'
-import { deleteWishProduct, resetState } from '../slices/wishSlice'
+import { deleteWishProduct, deleteWishProducts, resetState } from '../slices/wishSlice'
 import { toast } from 'react-toastify'
 
 export default function WishProducts() {
@@ -22,13 +22,17 @@ export default function WishProducts() {
         dispatch(deleteWishProduct(wishProductId))
     }
 
+    function clearWishlist() {
+        dispatch(deleteWishProducts())
+    }
+
     return (
         <section className="py-12">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="products added" />
                 {loading
                     ? <Loader />
-                    : (
+                    : wishlist.length ? (
                         <div className="flex flex-wrap justify-center gap-10 mt-6">
                             {
                                 wishlist.map(wishProduct => (
@@ -37,7 +41,7 @@ export default function WishProducts() {
                                             <button onClick={() => deleteProduct(wishProduct._id)} className="absolute group top-0 left-0 bg-red-500 py-2 px-4 rounded-lg cursor-pointer z-10 hover:bg-gray-700">
                                                 <XIcon className="w-7 h-7 fill-white" />
                                             </button>
-                                            <Link to={`/product/${wishProduct.productSlug}`}>
+                                            <Link to={`/shop/${wishProduct.productSlug}`}>
                                                 <button className="view absolute group top-0 right-0 bg-white py-2 px-4 rounded-lg border-2 border-solid border-gray-800 hover:bg-gray-800 cursor-pointer z-10">
                                                     <EyeIcon className="w-7 h-7 fill-gray-700 group-hover:fill-white" />
                                                 </button>
@@ -52,16 +56,20 @@ export default function WishProducts() {
                                 ))
                             }
                         </div>
+                    ) : (
+                        <div className="bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[30rem] mx-auto mt-10 text-red-500 text-center text-2xl capitalize">
+                            your wishlist is empty
+                        </div>
                     )
                 }
 
-                <div className="grand-price bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] mx-auto mt-10">
+                <div className="grand-price bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] mx-auto mt-7">
                     <div className="total text-gray-600 font-medium text-3xl text-center">
                         grand total :
                         <span className="text-red-500"> ${totalPrice}/ -</span>
                     </div>
                     <button className="w-full bg-yellow-500 btn__style capitalize mt-4">continue shopping</button>
-                    <button className="w-full bg-red-500 btn__style capitalize mt-4">delete all</button>
+                    <button className={`w-full btn__style capitalize mt-4 ${wishlist.length ? 'bg-red-500' : 'bg-red-300 pointer-events-none'}`} onClick={clearWishlist}>delete all</button>
                 </div>
             </div>
         </section>

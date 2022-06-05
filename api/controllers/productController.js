@@ -19,3 +19,12 @@ export const getProducts = asyncHandler(async (req, res) => {
     const products = await Product.find(req.query)
     res.status(200).json(products)
 })
+
+// @desc   get one product
+// @route  GET api/product/:slug
+// @access Public
+export const getProduct = asyncHandler(async (req, res) => {
+    const { slug } = req.params
+    const product = await Product.findOne({ slug })
+    res.status(200).json(product)
+})

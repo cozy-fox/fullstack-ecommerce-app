@@ -41,6 +41,15 @@ export const deleteWishProduct = createAsyncThunk(
     }
 )
 
+//clear wishlist
+export const deleteWishProducts = createAsyncThunk(
+    'wishlist/deleteAll',
+    async (_, thunkAPI) => {
+        const userId = thunkAPI.getState().auth.user?._id
+        return await wishService.clearWishlist(`/wishlist/${userId}`)
+    }
+)
+
 const wishSlice = createSlice({
     name: 'wish',
     initialState,
@@ -71,6 +80,11 @@ const wishSlice = createSlice({
             })
             .addCase(deleteWishProduct.fulfilled, (state, action) => {
                 state.wishlist = state.wishlist.filter(wish => wish._id !== action.payload.wishId)
+                state.success = true
+                state.message = action.payload.message
+            })
+            .addCase(deleteWishProducts.fulfilled, (state, action) => {
+                state.wishlist = []
                 state.success = true
                 state.message = action.payload.message
             })

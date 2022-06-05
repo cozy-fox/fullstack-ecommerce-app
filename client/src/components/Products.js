@@ -1,27 +1,13 @@
-import { useEffect } from 'react'
 import SecTitle from './SecTitle'
 import { Link } from 'react-router-dom'
 import { EyeIcon } from '@heroicons/react/solid'
 import Loader from './Loader'
 import { useFetch } from '../hooks/fetchData'
-import { useSelector, useDispatch } from 'react-redux'
-import { toast } from 'react-toastify'
-import { addInWishlist, resetState } from '../slices/wishSlice'
+import { useWishlist } from '../hooks/wishlist'
 
 export default function Products() {
     const { data: latestProducts, isLoading } = useFetch('/product/?latest=true')
-    const { message, success, error } = useSelector(state => state.wishList)
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        if (success) toast(message, { type: 'success', autoClose: 2000 })
-        if (error) toast(message, { type: 'error', autoClose: 2000 })
-        dispatch(resetState())
-    }, [message, success, error, dispatch])
-
-    function wishlist(productSlug, productImage, productPrice, productName) {
-        dispatch(addInWishlist({ productSlug, productImage, productPrice, productName }))
-    }
+    const { wishlist } = useWishlist()
 
     return (
         <section className="section py-10">
@@ -37,14 +23,14 @@ export default function Products() {
                                         <div className="price absolute top-0 left-0 bg-red-500 text-white text-lg p-2 rounded-lg">
                                             $<span className="text-white text-2xl font-medium px-1">{product.price}</span>/-
                                         </div>
-                                        <Link to={`/product/${product.slug}`}>
+                                        <Link to={`/shop/${product.slug}`}>
                                             <button className="view absolute group top-0 right-0 bg-white py-2 px-4 rounded-lg border-2 border-solid border-gray-800 hover:bg-gray-800 cursor-pointer z-10">
                                                 <EyeIcon className="w-7 h-7 fill-gray-700 group-hover:fill-white" />
                                             </button>
                                         </Link>
                                         <img src={product.productImage} alt="" className="object-contain w-full h-80" />
                                     </div>
-                                    <h3 className="font-semibold text-xl text-gray-500 text-center py-4 lowercase">{product.title}</h3>
+                                    <h3 className="font-semibold text-2xl text-gray-600 text-center py-4 lowercase">{product.title}</h3>
                                     <input type="number" className="w-full border-2 border-solid border-gray-800 rounded-lg p-3 text-xl text-gray-700 font-medium" min="1" max={product.inStock} defaultValue="1" />
                                     <button className="w-full bg-yellow-500 btn__style mt-4 mb-3 capitalize" onClick={() => wishlist(product.slug, product.productImage, product.price, product.title)}>add to wishlist</button>
                                     <button className="w-full bg-green-500 btn__style capitalize">add to cart</button>
