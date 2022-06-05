@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <div className="app">
+    <div className="app min-h-screen flex flex-col">
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />

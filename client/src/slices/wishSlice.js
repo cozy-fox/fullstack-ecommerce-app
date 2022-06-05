@@ -12,10 +12,10 @@ const initialState = {
 //add product in wishlist
 export const addInWishlist = createAsyncThunk(
     'wishlist/add',
-    async (productId, thunkAPI) => {
+    async (productData, thunkAPI) => {
         try {
             const userId = thunkAPI.getState().auth.user?._id
-            return await wishService.wishlist(`/wishlist/${userId}/${productId}`)
+            return await wishService.addToWishlist(`/wishlist/${userId}`, productData)
         } catch (err) {
             const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
             return thunkAPI.rejectWithValue(message)
@@ -28,7 +28,16 @@ export const wishProducts = createAsyncThunk(
     'wishlist/get',
     async (_, thunkAPI) => {
         const userId = thunkAPI.getState().auth.user?._id
-        return await wishService.wishlist(`/wishlist/${userId}`)
+        return await wishService.ProductsFromWishlist(`/wishlist/${userId}`)
+    }
+)
+
+//delete product from wishlist
+export const deleteWishProduct = createAsyncThunk(
+    'wishlist/delete',
+    async (id, thunkAPI) => {
+        const userId = thunkAPI.getState().auth.user?._id
+        return await wishService.deleteProductFromWishlist(`/wishlist/${userId}/${id}`)
     }
 )
 
@@ -59,6 +68,11 @@ const wishSlice = createSlice({
             .addCase(wishProducts.fulfilled, (state, action) => {
                 state.loading = false
                 state.wishlist = action.payload
+            })
+            .addCase(deleteWishProduct.fulfilled, (state, action) => {
+                state.wishlist = state.wishlist.filter(wish => wish._id !== action.payload.wishId)
+                state.success = true
+                state.message = action.payload.message
             })
     }
 })

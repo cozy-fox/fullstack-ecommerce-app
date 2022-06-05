@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function MainFooter() {
     return (
-        <footer className="footer bg-white">
+        <footer className="footer bg-white mt-auto">
             <div className="wrapper max-w-screen-xl mx-auto grid grid-cols-4 gap-4 pt-8 pb-9">
                 <div className="quick">
                     <h3 className="uppercase text-2xl font-semibold text-gray-800">quick links</h3>
