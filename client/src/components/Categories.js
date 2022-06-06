@@ -1,17 +1,27 @@
 import SecTitle from './SecTitle'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Loader from './Loader'
 import { useFetch } from '../hooks/fetchData'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentCategory } from '../slices/categorySlice'
 
 export default function Cats() {
-    const { data: categories, isLoading } = useFetch('/category/')
+    // const { data: categories, isLoading } = useFetch('/category/')
+    const { categories, loading } = useSelector(state => state.categories)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    function setCategory(slug) {
+        dispatch(setCurrentCategory(slug))
+        navigate('/shop')
+    }
 
     return (
         <section className="section py-10">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="shop by category" />
                 {
-                    isLoading
+                    loading
                         ? <Loader />
                         : (
                             <div className="categories grid grid-cols-4 gap-5 mt-6">
@@ -20,11 +30,9 @@ export default function Cats() {
                                         <img src={category.image} alt="" className="catImage object-cover w-full h-80" />
                                         <h1 className="text-center text-2xl text-gray-700 font-semibold uppercase py-6">{category.title}</h1>
                                         <p className="text-center text-xl text-gray-500 font-medium leading-normal">{category.description}</p>
-                                        <Link to={category.slug}>
-                                            <div className="text-center">
-                                                <button className="bg-green-500 btn__style px-6 mt-4">{category.title}</button>
-                                            </div>
-                                        </Link>
+                                        <div onClick={() => setCategory(category.slug)} className="text-center">
+                                            <button className="bg-green-500 btn__style px-6 mt-4">{category.title}</button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

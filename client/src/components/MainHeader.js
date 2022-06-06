@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../slices/authSlice'
 import { wishProducts } from '../slices/wishSlice'
+import { allProducts } from '../slices/productSlice'
+import { allCategories } from '../slices/categorySlice'
 
 export default function MainHeader() {
     const [showUser, setShowUser] = useState(false)
@@ -16,6 +18,11 @@ export default function MainHeader() {
             dispatch(wishProducts())
         }
     }, [user, dispatch])
+
+    useEffect(() => {
+        dispatch(allProducts())
+        dispatch(allCategories())
+    }, [dispatch])
 
     function logoutUser() {
         dispatch(logout())

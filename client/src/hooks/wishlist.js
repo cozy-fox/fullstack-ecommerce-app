@@ -10,7 +10,7 @@ export function useWishlist() {
     useEffect(() => {
         if (success) toast(message, { type: 'success', autoClose: 2000 })
         if (error) toast(message, { type: 'error', autoClose: 2000 })
-        dispatch(resetState())
+        if (success || error) dispatch(resetState())
     }, [message, success, error, dispatch])
 
     function wishlist(productSlug, productImage, productPrice, productName) {

@@ -3,6 +3,7 @@ import { useFetch } from '../hooks/fetchData'
 import Loader from '../components/Loader'
 import { useWishlist } from '../hooks/wishlist'
 import SecTitle from '../components/SecTitle'
+import Error from '../components/Error'
 
 export default function Product() {
     const { slug } = useParams()
@@ -15,7 +16,7 @@ export default function Product() {
                 <SecTitle name="quick view" />
                 {isLoading
                     ? <Loader />
-                    : (
+                    : product ? (
                         <div className="productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] mx-auto mt-6">
                             <div className="productImage relative w-full h-80">
                                 <div className="price absolute top-0 left-0 bg-red-500 text-white text-lg p-2 rounded-lg">
@@ -31,6 +32,8 @@ export default function Product() {
                             <button className="w-full bg-yellow-500 btn__style mt-4 mb-3 capitalize" onClick={() => wishlist(product.slug, product.productImage, product.price, product.title)}>add to wishlist</button>
                             <button className="w-full bg-green-500 btn__style capitalize">add to cart</button>
                         </div>
+                    ) : (
+                        <Error errMsg="product not found" />
                     )
                 }
             </div>

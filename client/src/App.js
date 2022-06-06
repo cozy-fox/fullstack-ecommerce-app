@@ -8,6 +8,7 @@ import Product from './pages/Product';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from './components/Layout';
+import Shop from './pages/Shop';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="wishlist" element={<Wishlist />} />
+            <Route path="shop" element={<Shop />} />
             <Route path="shop/:slug" element={<Product />} />
           </Route>
 

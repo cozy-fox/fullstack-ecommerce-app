@@ -6,6 +6,7 @@ import { EyeIcon, XIcon } from '@heroicons/react/solid'
 import Loader from './Loader'
 import { deleteWishProduct, deleteWishProducts, resetState } from '../slices/wishSlice'
 import { toast } from 'react-toastify'
+import Error from './Error'
 
 export default function WishProducts() {
     const { wishlist, loading, success, message } = useSelector(state => state.wishList)
@@ -57,9 +58,7 @@ export default function WishProducts() {
                             }
                         </div>
                     ) : (
-                        <div className="bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[30rem] mx-auto mt-10 text-red-500 text-center text-2xl capitalize">
-                            your wishlist is empty
-                        </div>
+                        <Error errMsg="your wishlist is empty" />
                     )
                 }
 

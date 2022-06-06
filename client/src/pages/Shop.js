@@ -1,26 +1,50 @@
-import SecTitle from './SecTitle'
+import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useWishlist } from '../hooks/wishlist'
+import SecTitle from '../components/SecTitle'
 import { Link } from 'react-router-dom'
 import { EyeIcon } from '@heroicons/react/solid'
-import Loader from './Loader'
-import { useFetch } from '../hooks/fetchData'
-import { useWishlist } from '../hooks/wishlist'
-import { useSelector } from 'react-redux'
+import Loader from '../components/Loader'
+import { setCurrentCategory } from '../slices/categorySlice'
 
-export default function Products() {
-    // const { data: latestProducts, isLoading } = useFetch('/product/?latest=true')
+export default function Shop() {
     const { products, loading } = useSelector(state => state.products)
+    const { categories, currentCategory } = useSelector(state => state.categories)
+    const [active, setActive] = useState(currentCategory)
     const { wishlist } = useWishlist()
+    const dispatch = useDispatch()
+
+    function selectCat(slug) {
+        dispatch(setCurrentCategory(slug))
+        setActive(slug)
+    }
 
     return (
         <section className="section py-10">
             <div className="wrapper max-w-screen-xl mx-auto">
-                <SecTitle name="latest products" />
+
+                <div className="categories">
+                    <div className="products grid grid-cols-5 gap-6 mb-10">
+                        <button onClick={() => selectCat('all')} className={`${active === 'all' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'} border-2 border-gray-800 border-solid rounded-lg py-4 text-center hover:bg-gray-700 hover:text-white text-xl font-semibold`}>
+                            All
+                        </button>
+                        {
+                            categories.map(category => (
+                                <button onClick={() => selectCat(category.slug)} key={category._id} className={`${active === category.slug ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'} border-2 border-gray-800 border-solid rounded-lg py-4 text-center hover:bg-gray-700 hover:text-white text-xl font-semibold`}>
+                                    {category.title}
+                                </button>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <SecTitle name="all products" />
                 {loading
                     ? <Loader />
                     : (
-                        <div className="products grid grid-cols-3 gap-10 mt-6">
+                        <div className="products grid grid-cols-4 gap-6 mt-6">
                             {products.map(product => {
-                                if (product.latest) {
+                                if (product.categories.includes(currentCategory)) {
                                     return <div key={product._id} className="productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4">
                                         <div className="productImage relative w-full h-80">
                                             <div className="price absolute top-0 left-0 bg-red-500 text-white text-lg p-2 rounded-lg">
@@ -41,8 +65,8 @@ export default function Products() {
                                 }
                             })}
                         </div>
-
-                    )}
+                    )
+                }
             </div>
         </section>
     )
