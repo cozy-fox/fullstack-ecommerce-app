@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser'
 import categoryRouter from './routes/categoryRoutes.js'
 import productRouter from './routes/productRoutes.js'
 import wishlistRouter from './routes/wishlistRoutes.js'
+import messageRouter from './routes/messageRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -33,6 +34,7 @@ app.use('/api/user', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/product', productRouter)
 app.use('/api/wishlist', wishlistRouter)
+app.use('/api/message', messageRouter)
 
 app.use(errorHandler)
 
