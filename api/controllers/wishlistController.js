@@ -16,7 +16,7 @@ export const getWishlists = asyncHandler(async (req, res) => {
 export const createWishlist = asyncHandler(async (req, res) => {
     const { userId } = req.params
     const { productName, productPrice, productImage, productSlug } = req.body
-    const checkWish = await Wishlist.findOne({ productSlug })
+    const checkWish = await Wishlist.countDocuments({ userId, productSlug })
     if (checkWish) {
         res.status(400)
         throw new Error('Already in your wishlist')

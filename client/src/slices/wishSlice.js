@@ -36,8 +36,13 @@ export const wishProducts = createAsyncThunk(
 export const deleteWishProduct = createAsyncThunk(
     'wishlist/delete',
     async (id, thunkAPI) => {
-        const userId = thunkAPI.getState().auth.user?._id
-        return await wishService.deleteProductFromWishlist(`/wishlist/${userId}/${id}`)
+        try {
+            const userId = thunkAPI.getState().auth.user?._id
+            return await wishService.deleteProductFromWishlist(`/wishlist/${userId}/${id}`)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
     }
 )
 
@@ -45,8 +50,13 @@ export const deleteWishProduct = createAsyncThunk(
 export const deleteWishProducts = createAsyncThunk(
     'wishlist/deleteAll',
     async (_, thunkAPI) => {
-        const userId = thunkAPI.getState().auth.user?._id
-        return await wishService.clearWishlist(`/wishlist/${userId}`)
+        try {
+            const userId = thunkAPI.getState().auth.user?._id
+            return await wishService.clearWishlist(`/wishlist/${userId}`)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
     }
 )
 
@@ -83,10 +93,18 @@ const wishSlice = createSlice({
                 state.success = true
                 state.message = action.payload.message
             })
+            .addCase(deleteWishProduct.rejected, (state, action) => {
+                state.error = true
+                state.message = action.payload
+            })
             .addCase(deleteWishProducts.fulfilled, (state, action) => {
                 state.wishlist = []
                 state.success = true
                 state.message = action.payload.message
+            })
+            .addCase(deleteWishProducts.rejected, (state, action) => {
+                state.error = true
+                state.message = action.payload
             })
     }
 })

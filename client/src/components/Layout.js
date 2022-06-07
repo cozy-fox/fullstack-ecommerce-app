@@ -2,10 +2,10 @@ import MainHeader from './MainHeader'
 import MainFooter from './MainFooter'
 import { Outlet } from "react-router-dom";
 
-export default function Layout() {
+export default function Layout({ user }) {
     return (
         <>
-            <MainHeader />
+            <MainHeader user={user} />
             <Outlet />
             <MainFooter />
         </>

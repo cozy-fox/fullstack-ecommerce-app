@@ -11,8 +11,13 @@ import Layout from './components/Layout';
 import Shop from './pages/Shop';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import { useSelector } from 'react-redux'
+import Protected from './pages/Protected';
+import Profile from './pages/Profile';
 
 function App() {
+  const { user } = useSelector(state => state.auth)
+
   return (
     <div className="app min-h-screen flex flex-col">
       <Router>
@@ -21,13 +26,28 @@ function App() {
 
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Layout user={user} />}>
             <Route index element={<Home />} />
-            <Route path="wishlist" element={<Wishlist />} />
             <Route path="shop" element={<Shop />} />
             <Route path="shop/:slug" element={<Product />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route
+              path="wishlist"
+              element={
+                <Protected user={user}>
+                  <Wishlist />
+                </Protected>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <Protected user={user}>
+                  <Profile user={user} />
+                </Protected>
+              }
+            />
           </Route>
 
         </Routes>

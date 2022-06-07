@@ -9,15 +9,16 @@ import { toast } from 'react-toastify'
 import Error from './Error'
 
 export default function WishProducts() {
-    const { wishlist, loading, success, message } = useSelector(state => state.wishList)
+    const { wishlist, loading, success, message, error } = useSelector(state => state.wishList)
     const dispatch = useDispatch()
 
     const totalPrice = wishlist.reduce((acc, item) => acc + item.productPrice, 0)
 
     useEffect(() => {
         if (success) toast(message, { type: 'success', autoClose: 2000 })
-        dispatch(resetState())
-    }, [success, message, dispatch])
+        if (error) toast(message, { type: 'error', autoClose: 2000 })
+        if (success || error) dispatch(resetState())
+    }, [success, message, error, dispatch])
 
     function deleteProduct(wishProductId) {
         dispatch(deleteWishProduct(wishProductId))

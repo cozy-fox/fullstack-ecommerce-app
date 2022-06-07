@@ -2,39 +2,38 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+// import { v1 } from 'uuid'
 
 // @desc   Register user
 // @route  POST api/auth/register
 // @access Public
 export const registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password, image } = req.body
     const { userIdForUpdate } = req.query
 
     if (userIdForUpdate) {
-        await User.findByIdAndUpdate(userIdForUpdate, { $set: { image: req.body.image } })
+        await User.findOneAndUpdate({ _id: userIdForUpdate }, { $set: { image } }, { runValidators: true })
         res.status(200).json('successfully updated image')
     }
 
-    if (!req.body.name || !req.body.email || !req.body.password) {
+    if (!name || !email || !password) {
         res.status(400)
         throw new Error('Please fill all the input fields')
     }
 
-    const checkUser = await User.countDocuments({ 'email': req.body.email })
+    const checkUser = await User.countDocuments({ email })
     if (checkUser) {
         res.status(400)
         throw new Error('User already exists')
     }
 
-    const defaultImage = 'https://firebasestorage.googleapis.com/v0/b/fullstack-ecommerce-f3adb.appspot.com/o/guest.webp?alt=media&token=da29d69d-0134-4b56-a295-55b348de4cbe'
-
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const hash = bcrypt.hashSync(password, salt);
 
     let newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: hash,
-        image: defaultImage
+        name,
+        email,
+        password: hash
     })
 
     newUser = await newUser.save()
@@ -78,6 +77,9 @@ export const loginUser = asyncHandler(async (req, res) => {
     res.status(200).json(other)
 })
 
+// @desc   Logout user
+// @route  GET api/auth/logout
+// @access Public
 export const logoutUser = (req, res) => {
     res.clearCookie('access_token')
     res.clearCookie('clientData')
