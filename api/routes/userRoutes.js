@@ -4,6 +4,6 @@ import { verifyUser } from '../middleware/tokenMiddleware.js'
 
 const router = express.Router()
 
-router.put('/:id', verifyUser, updateUser)
+router.put('/:id', updateUser)
 
 export default router

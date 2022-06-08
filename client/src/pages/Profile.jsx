@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import SecTitle from '../components/SecTitle'
 import { useForm } from "react-hook-form";
 import InputErr from '../components/InputErr';
+import axios from 'axios'
+import uploadImage from '../utils/uploadImg'
 
 export default function Profile({ user }) {
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-    function updateProfile(data) {
+    async function updateProfile(data) {
         if (!data.new && !data.old && !data.confirm && !data.name && !data.email && !data.image[0]) {
             return toast("All fields are empty. Nothing to update!!!", { type: 'info', autoClose: 2000 })
         }
@@ -26,6 +28,12 @@ export default function Profile({ user }) {
                 return toast("Fill other password fields to update your password", { type: 'error', autoClose: 2000 })
             }
         }
+
+        let imgUrl
+        if (data.image[0]) {
+            imgUrl = await uploadImage(data.image[0], user._id)
+        }
+
     }
 
     return (

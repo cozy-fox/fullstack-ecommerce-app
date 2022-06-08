@@ -11,6 +11,11 @@ async function logoutService() {
     return res.data.message
 }
 
-const authService = { loginService, logoutService }
+async function updateUser(url, userData) {
+    const res = await axios.put(url, userData)
+    return res.data
+}
+
+const authService = { loginService, logoutService, updateUser }
 
 export default authService
