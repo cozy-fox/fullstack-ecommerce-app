@@ -68,7 +68,9 @@ export default function WishProducts() {
                         grand total :
                         <span className="text-red-500"> ${totalPrice}/ -</span>
                     </div>
-                    <button className="w-full bg-yellow-500 btn__style capitalize mt-4">continue shopping</button>
+                    <Link to="/shop">
+                        <button className="w-full bg-yellow-500 btn__style capitalize mt-4">continue shopping</button>
+                    </Link>
                     <button className={`w-full btn__style capitalize mt-4 ${wishlist.length ? 'bg-red-500' : 'bg-red-300 pointer-events-none'}`} onClick={clearWishlist}>delete all</button>
                 </div>
             </div>

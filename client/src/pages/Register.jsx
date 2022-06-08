@@ -4,16 +4,14 @@ import InputErr from '../components/InputErr';
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import axios from 'axios'
-import { storage, ref, uploadBytesResumable, getDownloadURL } from "../firebase";
 import Loader from '../components/Loader';
 import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux'
+import uploadImage from '../utils/uploadImg';
 
-export default function Register() {
+export default function Register({ user }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const { user } = useSelector(state => state.auth)
 
     useEffect(() => {
         if (user) {
@@ -31,53 +29,15 @@ export default function Register() {
         setLoading(true)
 
         try {
-            let userId
             const res = await axios.post('/auth/register', { name, password, email })
-            userId = res.data.userId
-            if (imageFile.length) {
-                const storageRef = ref(storage, userId);
-                const uploadTask = uploadBytesResumable(storageRef, imageFile[0]);
-
-                uploadTask.on('state_changed',
-                    (snapshot) => {
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('Upload is ' + progress + '% done');
-                        switch (snapshot.state) {
-                            case 'paused':
-                                console.log('Upload is paused');
-                                break;
-                            case 'running':
-                                console.log('Upload is running');
-                                break;
-                        }
-                    },
-                    (error) => {
-                        switch (error.code) {
-                            case 'storage/unauthorized':
-                                console.log("User doesn't have permission to access the object")
-                                break;
-                            case 'storage/canceled':
-                                console.log("User canceled the upload")
-                                break;
-                            case 'storage/unknown':
-                                console.log("Unknown error occurred, inspect error.serverResponse")
-                                break;
-                        }
-                    },
-                    () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-                            await axios.post(`/auth/register?userIdForUpdate=${userId}`, { image: downloadURL })
-                            setLoading(false)
-                            reset()
-                            navigate('/login')
-                        });
-                    }
-                );
-            } else {
-                setLoading(false)
-                reset()
-                navigate('/login')
+            const userId = res.data.userId
+            if (imageFile[0]) {
+                let imgUrl = await uploadImage(imageFile[0], userId)
+                await axios.post(`/auth/register?userIdForUpdate=${userId}`, { image: imgUrl })
             }
+            setLoading(false)
+            reset()
+            navigate('/login')
         } catch (err) {
             setLoading(false)
             toast(err.response.data.message, { type: 'error', autoClose: 2000 })

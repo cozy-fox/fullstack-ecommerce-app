@@ -77,6 +77,9 @@ const authSlice = createSlice({
             .addCase(logout.fulfilled, (state) => {
                 state.user = null
             })
+            .addCase(updateUser.pending, (state) => {
+                state.loading = true
+            })
             .addCase(updateUser.fulfilled, (state, action) => {
                 state.user = action.payload
                 state.message = "Successfully updated your profile"
