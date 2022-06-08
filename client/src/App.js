@@ -14,6 +14,7 @@ import Contact from './pages/Contact';
 import { useSelector } from 'react-redux'
 import Protected from './pages/Protected';
 import Profile from './pages/Profile';
+import Search from './pages/Search';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -32,6 +33,7 @@ function App() {
             <Route path="shop/:slug" element={<Product />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="search" element={<Search />} />
             <Route
               path="wishlist"
               element={
