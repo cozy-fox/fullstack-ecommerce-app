@@ -1,8 +1,9 @@
 import asyncHandler from 'express-async-handler'
 import Wishlist from '../models/wishlistModel.js'
+import Cart from '../models/cartModel.js'
 
 // @desc   get clients wishlists
-// @route  GET api/wishlist/
+// @route  GET api/wishlist/:userId
 // @access Private
 export const getWishlists = asyncHandler(async (req, res) => {
     const { userId } = req.params
@@ -11,11 +12,18 @@ export const getWishlists = asyncHandler(async (req, res) => {
 })
 
 // @desc   create clients wishlist
-// @route  POST api/wishlist/create
+// @route  POST api/wishlist/:userId
 // @access Private
 export const createWishlist = asyncHandler(async (req, res) => {
     const { userId } = req.params
     const { productName, productPrice, productImage, productSlug } = req.body
+
+    const cartProduct = await Cart.findOne({ userId, productSlug })
+    if (cartProduct) {
+        res.status(400)
+        throw new Error('Product is in your cart')
+    }
+
     const checkWish = await Wishlist.countDocuments({ userId, productSlug })
     if (checkWish) {
         res.status(400)

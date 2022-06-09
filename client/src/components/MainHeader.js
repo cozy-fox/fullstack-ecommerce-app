@@ -6,16 +6,19 @@ import { logout } from '../slices/authSlice'
 import { wishProducts } from '../slices/wishSlice'
 import { allProducts } from '../slices/productSlice'
 import { allCategories } from '../slices/categorySlice'
+import { cartProducts } from '../slices/cartSlice'
 
 export default function MainHeader({ user }) {
     const [showUser, setShowUser] = useState(false)
     const { wishlist } = useSelector(state => state.wishList)
+    const { cartItems } = useSelector(state => state.cart)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
         if (user) {
             dispatch(wishProducts())
+            dispatch(cartProducts())
         }
         dispatch(allProducts())
         dispatch(allCategories())
@@ -76,7 +79,7 @@ export default function MainHeader({ user }) {
                                     <Link to="/cart">
                                         <div className="flex text-xl text-gray-500 items-end group hover:text-green-500 transition-all cursor-pointer">
                                             <ShoppingCartIcon className="w-9 h-9 fill-gray-500 group-hover:fill-green-500 transition-all" />
-                                            (<span className="text-gray-500 group-hover:text-green-500 transition-all">0</span>)
+                                            (<span className="text-gray-500 group-hover:text-green-500 transition-all">{cartItems.length}</span>)
                                         </div>
                                     </Link>
                                 </>

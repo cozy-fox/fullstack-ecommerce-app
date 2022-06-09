@@ -106,6 +106,9 @@ const wishSlice = createSlice({
                 state.error = true
                 state.message = action.payload
             })
+            .addCase('cartList/add/fulfilled', (state, action) => {
+                state.wishlist = state.wishlist.filter(wish => wish.productSlug !== action.payload.productSlug)
+            })
     }
 })
 

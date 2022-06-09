@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux'
 import Protected from './pages/Protected';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
+import Cart from './pages/Cart';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -47,6 +48,14 @@ function App() {
               element={
                 <Protected user={user}>
                   <Profile user={user} />
+                </Protected>
+              }
+            />
+            <Route
+              path="cart"
+              element={
+                <Protected user={user}>
+                  <Cart user={user} />
                 </Protected>
               }
             />

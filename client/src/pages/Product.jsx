@@ -1,14 +1,18 @@
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFetch } from '../hooks/fetchData'
 import Loader from '../components/Loader'
 import { useWishlist } from '../hooks/wishlist'
 import SecTitle from '../components/SecTitle'
 import Error from '../components/Error'
+import { useCart } from '../hooks/cart'
 
 export default function Product() {
     const { slug } = useParams()
     const { data: product, isLoading } = useFetch(`/product/${slug}`)
     const { wishlist } = useWishlist()
+    const { addToCart } = useCart()
+    const [quantity, setQuantity] = useState(1)
 
     return (
         <section className="section py-10">
@@ -28,9 +32,9 @@ export default function Product() {
                             {product.description &&
                                 <p className="mb-4 mt-2 text-lg text-gray-400 font-semibold text-center leading-loose">{product.description}</p>
                             }
-                            <input type="number" className="w-full border-2 border-solid border-gray-800 rounded-lg p-3 text-xl text-gray-700 font-medium" min="1" max={product.inStock} defaultValue="1" />
+                            <input type="number" onChange={e => setQuantity(e.target.value)} className="w-full border-2 border-solid border-gray-800 rounded-lg p-3 text-xl text-gray-700 font-medium" min="1" max={product.inStock} defaultValue="1" />
                             <button className="w-full bg-yellow-500 btn__style mt-4 mb-3 capitalize" onClick={() => wishlist(product.slug, product.productImage, product.price, product.title)}>add to wishlist</button>
-                            <button className="w-full bg-green-500 btn__style capitalize">add to cart</button>
+                            <button className="w-full bg-green-500 btn__style capitalize" onClick={() => addToCart(product.title, product.price, product.productImage, product.slug, quantity, product.inStock)}>add to cart</button>
                         </div>
                     ) : (
                         <Error errMsg="product not found" />

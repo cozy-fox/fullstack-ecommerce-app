@@ -4,6 +4,7 @@ import wishReducer from './slices/wishSlice'
 import productReducer from './slices/productSlice'
 import categoryReducer from './slices/categorySlice'
 import messageReducer from './slices/messageSlice'
+import cartReducer from './slices/cartSlice'
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         wishList: wishReducer,
         products: productReducer,
         categories: categoryReducer,
-        message: messageReducer
+        message: messageReducer,
+        cart: cartReducer
     }
 })
 
