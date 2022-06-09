@@ -21,6 +21,10 @@ const wishSchema = new mongoose.Schema({
     productImage: {
         type: String,
         required: true
+    },
+    inStock: {
+        type: Number,
+        required: true
     }
 }, { timestamps: true })
 

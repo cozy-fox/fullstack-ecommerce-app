@@ -13,8 +13,8 @@ export function useWishlist() {
         if (success || error) dispatch(resetState())
     }, [message, success, error, dispatch])
 
-    function wishlist(productSlug, productImage, productPrice, productName) {
-        dispatch(addInWishlist({ productSlug, productImage, productPrice, productName }))
+    function wishlist(productSlug, productImage, productPrice, productName, inStock) {
+        dispatch(addInWishlist({ productSlug, productImage, productPrice, productName, inStock }))
     }
 
     return { wishlist }

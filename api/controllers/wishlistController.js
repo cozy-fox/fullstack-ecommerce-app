@@ -16,7 +16,7 @@ export const getWishlists = asyncHandler(async (req, res) => {
 // @access Private
 export const createWishlist = asyncHandler(async (req, res) => {
     const { userId } = req.params
-    const { productName, productPrice, productImage, productSlug } = req.body
+    const { productName, productPrice, productImage, productSlug, inStock } = req.body
 
     const cartProduct = await Cart.findOne({ userId, productSlug })
     if (cartProduct) {
@@ -29,7 +29,8 @@ export const createWishlist = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Already in your wishlist')
     }
-    let newWishlist = new Wishlist({ userId, productSlug, productName, productPrice, productImage })
+
+    let newWishlist = new Wishlist({ userId, productSlug, productName, productPrice, productImage, inStock })
     newWishlist = await newWishlist.save()
     res.status(200).json(newWishlist)
 })

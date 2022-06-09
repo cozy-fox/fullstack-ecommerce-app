@@ -33,7 +33,7 @@ export default function Product() {
                                 <p className="mb-4 mt-2 text-lg text-gray-400 font-semibold text-center leading-loose">{product.description}</p>
                             }
                             <input type="number" onChange={e => setQuantity(e.target.value)} className="w-full border-2 border-solid border-gray-800 rounded-lg p-3 text-xl text-gray-700 font-medium" min="1" max={product.inStock} defaultValue="1" />
-                            <button className="w-full bg-yellow-500 btn__style mt-4 mb-3 capitalize" onClick={() => wishlist(product.slug, product.productImage, product.price, product.title)}>add to wishlist</button>
+                            <button className="w-full bg-yellow-500 btn__style mt-4 mb-3 capitalize" onClick={() => wishlist(product.slug, product.productImage, product.price, product.title, product.inStock)}>add to wishlist</button>
                             <button className="w-full bg-green-500 btn__style capitalize" onClick={() => addToCart(product.title, product.price, product.productImage, product.slug, quantity, product.inStock)}>add to cart</button>
                         </div>
                     ) : (
