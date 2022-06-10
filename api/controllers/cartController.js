@@ -3,7 +3,7 @@ import Cart from '../models/cartModel.js'
 import Wishlist from '../models/wishlistModel.js'
 import Product from '../models/productModel.js'
 
-// @desc   get Items from cart
+// @desc   get items from cart
 // @route  GET api/cart/:userId
 // @access Private
 export const getCart = asyncHandler(async (req, res) => {
@@ -17,7 +17,7 @@ export const getCart = asyncHandler(async (req, res) => {
 // @access Private
 export const createCart = asyncHandler(async (req, res) => {
     const userId = req.user.id
-    const { productName, productPrice, productImage, productSlug, quantity } = req.body
+    const { productName, productPrice, productImage, productSlug, quantity, inStock } = req.body
 
     const checkCart = await Cart.countDocuments({ userId, productSlug })
     if (checkCart) {
@@ -29,7 +29,34 @@ export const createCart = asyncHandler(async (req, res) => {
 
     // await Product.updateOne({ slug: productSlug }, { $inc: { inStock: -quantity } })
 
-    let cartItem = new Cart({ userId, productSlug, productName, productPrice, productImage, quantity })
+    let cartItem = new Cart({ userId, productSlug, productName, productPrice, productImage, quantity, inStock })
     cartItem = await cartItem.save()
     res.status(200).json(cartItem)
+})
+
+// @desc   delete item from cart
+// @route  DELETE api/cart/:userId/:cartId
+// @access Private
+export const deleteItem = asyncHandler(async (req, res) => {
+    const { cartId } = req.params
+    await Cart.deleteOne({ _id: cartId })
+    res.status(200).json({ message: 'Successfully removed from cart', cartId })
+})
+
+// @desc   delete items in cart
+// @route  DELETE api/cart/:userId
+// @access Private
+export const deleteItems = asyncHandler(async (req, res) => {
+    const userId = req.user.id
+    await Cart.deleteMany({ userId })
+    res.status(200).json({ message: 'Successfully removed all products' })
+})
+
+// @desc   update quantity in cart
+// @route  PUT api/cart/:userId
+// @access Private
+export const updateQuantity = asyncHandler(async (req, res) => {
+    const { quantity, cartId } = req.body
+    await Cart.updateOne({ _id: cartId }, { $set: { quantity } })
+    res.status(200).json({ message: 'Successfully updated', cartId, quantity })
 })

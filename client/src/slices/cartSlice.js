@@ -6,7 +6,7 @@ const initialState = {
     loading: false,
     success: false,
     error: false,
-    message: ''
+    message: '',
 }
 
 //add item in cart
@@ -29,6 +29,48 @@ export const cartProducts = createAsyncThunk(
     async (_, thunkAPI) => {
         const userId = thunkAPI.getState().auth.user?._id
         return await cartService.allItems(`/cart/${userId}`)
+    }
+)
+
+//delete item from cart
+export const deleteItem = createAsyncThunk(
+    'cartList/deleteItem',
+    async (itemId, thunkAPI) => {
+        try {
+            const userId = thunkAPI.getState().auth.user?._id
+            return await cartService.deleteItem(`/cart/${userId}/${itemId}`)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+//delete item from cart
+export const deleteItems = createAsyncThunk(
+    'cartList/deleteItems',
+    async (_, thunkAPI) => {
+        try {
+            const userId = thunkAPI.getState().auth.user?._id
+            return await cartService.deleteItems(`/cart/${userId}`)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+//update quantity in cart
+export const updateQuantity = createAsyncThunk(
+    'cartList/update',
+    async (itemData, thunkAPI) => {
+        try {
+            const userId = thunkAPI.getState().auth.user?._id
+            return await cartService.updateQuantity(`/cart/${userId}`, itemData)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
     }
 )
 
@@ -60,6 +102,40 @@ const cartSlice = createSlice({
             .addCase(cartProducts.fulfilled, (state, action) => {
                 state.loading = false
                 state.cartItems = action.payload
+            })
+            .addCase(deleteItem.fulfilled, (state, action) => {
+                state.success = true
+                state.message = action.payload.message
+                state.cartItems = state.cartItems.filter(item => item._id !== action.payload.cartId)
+            })
+            .addCase(deleteItem.rejected, (state, action) => {
+                state.error = true
+                state.message = action.payload
+            })
+            .addCase(deleteItems.fulfilled, (state, action) => {
+                state.success = true
+                state.message = action.payload.message
+                state.cartItems = []
+            })
+            .addCase(deleteItems.rejected, (state, action) => {
+                state.error = true
+                state.message = action.payload
+            })
+            .addCase(updateQuantity.fulfilled, (state, action) => {
+                state.qtyLoading = false
+                state.success = true
+                state.message = action.payload.message
+                state.cartItems = state.cartItems.map(item => {
+                    if (item._id === action.payload.cartId) {
+                        item.quantity = action.payload.quantity
+                    }
+                    return item
+                })
+            })
+            .addCase(updateQuantity.rejected, (state, action) => {
+                state.qtyLoading = false
+                state.error = true
+                state.message = action.payload
             })
     }
 })

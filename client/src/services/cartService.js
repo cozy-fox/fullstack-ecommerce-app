@@ -10,6 +10,20 @@ async function allItems(url) {
     return res.data
 }
 
+async function deleteItem(url) {
+    const res = await axios.delete(url)
+    return res.data
+}
 
-const cartService = { addInCart, allItems }
+async function deleteItems(url) {
+    const res = await axios.delete(url)
+    return res.data
+}
+
+async function updateQuantity(url, data) {
+    const res = await axios.put(url, data)
+    return res.data
+}
+
+const cartService = { addInCart, allItems, deleteItem, updateQuantity, deleteItems }
 export default cartService

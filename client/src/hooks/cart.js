@@ -16,7 +16,7 @@ export function useCart() {
     function addToCart(productName, productPrice, productImage, productSlug, quantity, inStock) {
         if (quantity <= 0) return toast('Your quantity must be at least 1', { type: 'error', autoClose: 2000 })
         if (quantity > inStock) return toast(`Out of stock. Total in stock: ${inStock}`, { type: 'warning', autoClose: 2000 })
-        dispatch(addItem({ productName, productPrice, productImage, productSlug, quantity }))
+        dispatch(addItem({ productName, productPrice, productImage, productSlug, quantity, inStock }))
     }
 
     return { addToCart }

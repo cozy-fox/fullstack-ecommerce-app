@@ -25,6 +25,10 @@ const cartSchema = new mongoose.Schema({
     quantity: {
         type: Number,
         required: true
+    },
+    inStock: {
+        type: Number,
+        required: true
     }
 }, { timestamps: true })
 
