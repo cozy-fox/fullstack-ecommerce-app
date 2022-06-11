@@ -1,16 +1,17 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import authRouter from './routes/authRoutes.js'
-import userRouter from './routes/userRoutes.js'
 import mongoose from 'mongoose'
 import { errorHandler } from './middleware/errorMiddleware.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import authRouter from './routes/authRoutes.js'
+import userRouter from './routes/userRoutes.js'
 import categoryRouter from './routes/categoryRoutes.js'
 import productRouter from './routes/productRoutes.js'
 import wishlistRouter from './routes/wishlistRoutes.js'
 import messageRouter from './routes/messageRoutes.js'
 import cartRouter from './routes/cartRoutes.js'
+import checkoutRouter from './routes/checkoutRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -37,6 +38,7 @@ app.use('/api/product', productRouter)
 app.use('/api/wishlist', wishlistRouter)
 app.use('/api/message', messageRouter)
 app.use('/api/cart', cartRouter)
+app.use('/api/checkout', checkoutRouter)
 
 app.use(errorHandler)
 

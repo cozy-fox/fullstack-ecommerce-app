@@ -5,12 +5,14 @@ import { useSelector } from 'react-redux'
 import CartProduct from '../components/CartProduct'
 import { useEffect } from 'react'
 import { resetState, deleteItems } from '../slices/cartSlice'
+import { reset, urlForCheckout } from '../slices/paymentSlice'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import Error from '../components/Error'
 
 export default function Cart() {
     const { cartItems, loading, success, error, message } = useSelector(state => state.cart)
+    const { url, checkout_loading, checkout_success, checkout_error, checkout_message } = useSelector(state => state.pay)
     const dispatch = useDispatch()
 
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.productPrice * item.quantity), 0)
@@ -21,14 +23,27 @@ export default function Cart() {
         if (success || error) dispatch(resetState())
     }, [success, error, message, dispatch])
 
+    useEffect(() => {
+        if (checkout_success) {
+            window.location = url
+        }
+        if (checkout_error) toast(checkout_message, { type: 'error', autoClose: 2000 })
+        if (checkout_success || checkout_error) dispatch(reset())
+    }, [checkout_success, checkout_error, checkout_message, url, dispatch])
+
     function clearCart() {
         dispatch(deleteItems())
+    }
+
+    async function paymentProcess() {
+        const itemData = cartItems.map(item => item._id)
+        dispatch(urlForCheckout(itemData))
     }
 
     return (
         <section className="section py-10">
             <div className="wrapper max-w-screen-xl mx-auto">
-                <SecTitle name="latest products" />
+                <SecTitle name="products added" />
                 {loading
                     ? <Loader />
                     : cartItems.length ? (
@@ -51,9 +66,7 @@ export default function Cart() {
                         <button className="w-full bg-yellow-500 btn__style capitalize mt-4">continue shopping</button>
                     </Link>
                     <button className={`w-full btn__style capitalize mt-4 ${cartItems.length ? 'bg-red-500' : 'bg-red-300 pointer-events-none'}`} onClick={clearCart}>delete all</button>
-                    <Link to="/checkout" className={`${!cartItems.length && 'pointer-events-none'}`}>
-                        <button className={`w-full btn__style capitalize mt-4 ${cartItems.length ? 'bg-green-500' : 'bg-green-300'}`}>proceed to checkout</button>
-                    </Link>
+                    <button className={`w-full btn__style capitalize mt-4 ${cartItems.length && !checkout_loading ? 'bg-green-500' : 'bg-green-300 pointer-events-none'}`} onClick={paymentProcess}>proceed to checkout</button>
                 </div>
             </div>
         </section>
