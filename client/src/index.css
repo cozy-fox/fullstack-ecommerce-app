@@ -78,3 +78,44 @@ html {
     background-size: cover;
     background-position: center;
 }
+
+
+
+.StripeElement,
+.StripeElementIdeal,
+.StripeElementP24,
+.StripeElementEPS,
+.StripeElementFpx {
+    display: block;
+    width: 100%;
+    padding: 0.85rem;
+    /* box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px,
+    rgba(0, 0, 0, 0.0196078) 0px 1px 0px; */
+    border: .2rem solid black;
+    border-radius: 4px;
+    /* background: white; */
+}
+
+.StripeElement--focus,
+.StripeElementIdeal--focus,
+.StripeElementP24--focus,
+.StripeElementEPS--focus,
+.StripeElementFpx--focus {
+    /* box-shadow: rgba(50, 50, 93, 0.109804) 0px 4px 6px,
+        rgba(0, 0, 0, 0.0784314) 0px 1px 3px;
+    -webkit-transition: all 150ms ease; */
+    border-color: rgb(12, 185, 12);
+    transition: all 150ms ease;
+}
+
+.StripeElement.loading {
+    height: 4.16rem;
+    opacity: 0.6;
+}
+
+.StripeElementIdeal,
+.StripeElementP24,
+.StripeElementEPS,
+.StripeElementFpx {
+    padding: 0;
+}

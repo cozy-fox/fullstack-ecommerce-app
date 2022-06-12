@@ -40,6 +40,10 @@ app.use('/api/message', messageRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/checkout', checkoutRouter)
 
+app.get('/api/publishableKey', (req, res) => {
+    res.status(200).json({ key: process.env.STRIPE_PUBIC })
+})
+
 app.use(errorHandler)
 
 app.listen(port, () => {

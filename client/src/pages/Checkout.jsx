@@ -1,9 +1,22 @@
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux"
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+
+const options = {
+    hidePostalCode: true,
+    style: {
+        base: {
+            fontFamily: '"Rubik", sans-serif',
+            fontSize: '12.5px'
+        }
+    }
+}
 
 export default function Checkout() {
     const { cartItems } = useSelector(state => state.cart)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    // const stripe = useStripe()
+    // const element = useElements()
 
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.productPrice * item.quantity), 0)
 
@@ -29,7 +42,7 @@ export default function Checkout() {
                     <span className="text-red-500"> ${totalPrice}/ -</span>
                 </div>
 
-                <form className="w-[85rem] border-2 border-gray-700 border-solid rounded-lg p-4 mx-auto" onSubmit={handleSubmit(paymentProcess)}>
+                <form className="bg-white w-[85rem] border-2 border-gray-700 border-solid rounded-lg p-4 mx-auto" onSubmit={handleSubmit(paymentProcess)}>
                     <h1 className="rounded-lg py-4 bg-gray-800 uppercase text-white text-center text-4xl font-semibold">
                         place your order
                     </h1>
@@ -75,7 +88,18 @@ export default function Checkout() {
                             <input {...register("country", { required: true })} type="text" id="country" placeholder="e.g. Sweden" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800 focus:border-green-500" />
                         </div>
 
+                        <div className="inputField">
+                            <label htmlFor="post" className="text-gray-500 font-medium text-xl mb-2 inline-block">post address :</label>
+                            <input {...register("post", { required: true })} type="number" id="post" placeholder="e.g. 123456" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800 focus:border-green-500" />
+                        </div>
+
+                        <div>
+                            <label htmlFor="pay" className="text-gray-500 font-medium text-xl mb-2 inline-block">payment :</label>
+                            <CardElement id="pay" options={options} />
+                        </div>
                     </div>
+
+
                     <input type="submit" value="Place Order" className="py-4 w-full bg-green-600 btn__style capitalize mt-4 cursor-pointer" />
                 </form>
             </div>
