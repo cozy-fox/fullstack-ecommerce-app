@@ -14,13 +14,13 @@ import { loadStripe } from '@stripe/stripe-js'
 
   const root = ReactDOM.createRoot(document.getElementById('root'));
   root.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <Elements stripe={stripePromise}>
-          <App />
-        </Elements>
-      </Provider>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <Provider store={store}>
+      <Elements stripe={stripePromise}>
+        <App />
+      </Elements>
+    </Provider>
+    // </React.StrictMode>
   )
 
 })()

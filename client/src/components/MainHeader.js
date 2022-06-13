@@ -7,6 +7,7 @@ import { wishProducts } from '../slices/wishSlice'
 import { allProducts } from '../slices/productSlice'
 import { allCategories } from '../slices/categorySlice'
 import { cartProducts } from '../slices/cartSlice'
+import { allOrders } from '../slices/orderSlice'
 
 export default function MainHeader({ user }) {
     const [showUser, setShowUser] = useState(false)
@@ -19,6 +20,7 @@ export default function MainHeader({ user }) {
         if (user) {
             dispatch(wishProducts())
             dispatch(cartProducts())
+            dispatch(allOrders())
         }
         dispatch(allProducts())
         dispatch(allCategories())

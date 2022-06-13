@@ -16,8 +16,8 @@ import Protected from './pages/Protected';
 import Profile from './pages/Profile';
 import Search from './pages/Search';
 import Cart from './pages/Cart';
-import Success from './pages/Success';
 import Checkout from './pages/Checkout';
+import Orders from './pages/Orders';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -37,7 +37,14 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="search" element={<Search />} />
-            <Route path="success" element={<Success />} />
+            <Route
+              path="orders"
+              element={
+                <Protected user={user}>
+                  <Orders />
+                </Protected>
+              }
+            />
             <Route
               path="checkout"
               element={

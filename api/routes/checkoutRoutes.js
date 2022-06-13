@@ -4,6 +4,6 @@ import { checkout } from '../controllers/checkoutController.js'
 
 const router = express.Router()
 
-router.post('/:userId', checkout)
+router.post('/', checkout)
 
 export default router

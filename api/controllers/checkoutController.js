@@ -1,4 +1,3 @@
-import asyncHandler from 'express-async-handler'
 import stripe from 'stripe'
 import Cart from '../models/cartModel.js'
 import dotenv from 'dotenv'
@@ -7,29 +6,22 @@ dotenv.config()
 
 const stripeConfig = stripe(process.env.STRIPE)
 
-export const checkout = asyncHandler(async (req, res) => {
-    const cartItems = await Cart.find({ _id: { $in: req.body } })
+export const checkout = async (req, res) => {
 
-    const session = await stripeConfig.checkout.sessions.create({
-        payment_method_types: ["card"],
-        mode: "payment",
-        line_items: cartItems.map(item => {
-            return {
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: item.productName
-                    },
-                    unit_amount: item.productPrice * 100
-                },
-                quantity: item.quantity
-            }
-        }),
-        success_url: `${process.env.CLIENT_URL}/success`,
-        cancel_url: `${process.env.CLIENT_URL}/cancel`,
-    })
+    try {
+        const cartItems = await Cart.find({ _id: { $in: req.body } })
+        const amount = cartItems.reduce((acc, item) => ((item.productPrice * item.quantity * 100) + acc), 0)
 
-    console.log('hello')
+        const paymentIntent = await stripeConfig.paymentIntents.create({
+            amount,
+            currency: 'usd'
+        })
 
-    res.status(200).json({ url: session.url, itemIds: req.body })
-})
+        res.status(200).send(paymentIntent.client_secret)
+
+    } catch (err) {
+        res.status(500)
+        throw new Error(err.message)
+    }
+
+}

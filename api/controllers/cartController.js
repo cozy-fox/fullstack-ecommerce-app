@@ -27,8 +27,6 @@ export const createCart = asyncHandler(async (req, res) => {
 
     await Wishlist.deleteOne({ userId, productSlug })
 
-    // await Product.updateOne({ slug: productSlug }, { $inc: { inStock: -quantity } })
-
     let cartItem = new Cart({ userId, productSlug, productName, productPrice, productImage, quantity, inStock })
     cartItem = await cartItem.save()
     res.status(200).json(cartItem)

@@ -12,6 +12,7 @@ import wishlistRouter from './routes/wishlistRoutes.js'
 import messageRouter from './routes/messageRoutes.js'
 import cartRouter from './routes/cartRoutes.js'
 import checkoutRouter from './routes/checkoutRoutes.js'
+import orderRouter from './routes/orderRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -39,6 +40,7 @@ app.use('/api/wishlist', wishlistRouter)
 app.use('/api/message', messageRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/checkout', checkoutRouter)
+app.use('/api/order', orderRouter)
 
 app.get('/api/publishableKey', (req, res) => {
     res.status(200).json({ key: process.env.STRIPE_PUBIC })

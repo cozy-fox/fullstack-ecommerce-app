@@ -1,6 +1,12 @@
+import { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import axios from "axios"
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
+import { useNavigate } from 'react-router-dom'
+import { orderReset, newOrder } from '../slices/orderSlice'
 
 const options = {
     hidePostalCode: true,
@@ -14,14 +20,96 @@ const options = {
 
 export default function Checkout() {
     const { cartItems } = useSelector(state => state.cart)
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    // const stripe = useStripe()
-    // const element = useElements()
+    const { order_success, order_error, order_message } = useSelector(state => state.order)
+    const { register, handleSubmit, reset } = useForm();
+    const [processing, setProcessing] = useState(false)
+    const stripe = useStripe()
+    const elements = useElements()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.productPrice * item.quantity), 0)
 
-    function paymentProcess(data) {
-        console.log(data)
+    useEffect(() => {
+        if (order_success) {
+            toast(order_message, { type: 'success', autoClose: 2000 })
+            reset()
+            navigate('/orders')
+        }
+        if (order_error) toast(order_message, { type: 'error', autoClose: 2000 })
+
+        if (order_success || order_error) {
+            dispatch(orderReset())
+            setProcessing(false)
+        }
+    }, [order_message, order_success, order_error, dispatch, reset, navigate, toast, orderReset, setProcessing])
+
+    async function paymentProcess(data) {
+        if (!stripe || !elements) return
+
+        const billingDetails = {
+            name: data.name,
+            email: data.email,
+            address: {
+                city: data.city,
+                line1: `${data.address1} ${data.address2}`,
+                state: data.state,
+                postal_code: data.post
+            }
+        }
+
+        try {
+            setProcessing(true)
+            const productIds = cartItems.map(item => item._id)
+            const { data: clientSecret } = await axios.post('/checkout', productIds)
+
+            const cardElement = elements.getElement(CardElement)
+
+            const paymentMethodReq = await stripe.createPaymentMethod({
+                type: 'card',
+                card: cardElement,
+                billing_details: billingDetails
+            })
+
+            const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: paymentMethodReq.paymentMethod.id
+            })
+
+            if (stripeError) {
+                toast(stripeError.message, { type: 'error', autoClose: 2000 });
+                setProcessing(false)
+
+            } else {
+                if (paymentIntent.status === 'succeeded') {
+
+                    const orderDetails = {
+                        paymentInfo: {
+                            paymentId: paymentIntent.id,
+                            paymentStatus: paymentIntent.status
+                        },
+                        name: data.name,
+                        email: data.email,
+                        number: data.number,
+                        address: `flat no. ${data.address1}, street name ${data.address2} ${data.city} ${data.state} ${data.country} - ${data.post}`,
+                        orders: cartItems.map(item => (`${item.productName} (${item.quantity})`)).join(', '),
+                        cartProducts: cartItems,
+                        totalPrice,
+                        productIds
+                    }
+
+                    dispatch(newOrder(orderDetails))
+
+                } else {
+                    toast("Your payment was not successful, please try again.", { type: 'error', autoClose: 2000 });
+                    setProcessing(false)
+                }
+            }
+
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            toast(message, { type: 'error', autoClose: 2000 })
+            setProcessing(false)
+        }
     }
 
     return (
@@ -99,8 +187,12 @@ export default function Checkout() {
                         </div>
                     </div>
 
-
-                    <input type="submit" value="Place Order" className="py-4 w-full bg-green-600 btn__style capitalize mt-4 cursor-pointer" />
+                    {
+                        processing ? <Loader customCss="mb-4" />
+                            : (
+                                <input type="submit" value="Place Order" className="py-4 w-full bg-green-600 btn__style capitalize mt-4 cursor-pointer" />
+                            )
+                    }
                 </form>
             </div>
         </section>
