@@ -40,7 +40,8 @@ export default function Register({ user }) {
             navigate('/login')
         } catch (err) {
             setLoading(false)
-            toast(err.response.data.message, { type: 'error', autoClose: 2000 })
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            toast(message, { type: 'error', autoClose: 2000 })
         }
     }
 

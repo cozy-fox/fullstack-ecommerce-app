@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import SecTitle from '../components/SecTitle'
+import Error from '../components/Error'
 
 export default function Order() {
     const { orders, order_loading } = useSelector(state => state.order)
@@ -12,7 +13,7 @@ export default function Order() {
 
                 {
                     order_loading ? <Loader />
-                        : (
+                        : orders.length ? (
                             <div className="allOrders flex gap-6 flex-wrap my-6">
                                 {
                                     orders.map(order => (
@@ -59,7 +60,7 @@ export default function Order() {
                                     ))
                                 }
                             </div>
-                        )
+                        ) : (<Error errMsg="no orders yet" />)
                 }
 
             </div>

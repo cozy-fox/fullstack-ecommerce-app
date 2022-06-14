@@ -42,9 +42,11 @@ export default function Checkout() {
             dispatch(orderReset())
             setProcessing(false)
         }
-    }, [order_message, order_success, order_error, dispatch, reset, navigate, toast, orderReset, setProcessing])
+    }, [order_message, order_success, order_error, dispatch, reset, navigate, setProcessing])
 
     async function paymentProcess(data) {
+        if (!cartItems.length) return navigate('/cart')
+
         if (!stripe || !elements) return
 
         const billingDetails = {
