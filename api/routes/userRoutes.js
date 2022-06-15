@@ -1,9 +1,10 @@
 import express from 'express'
-import { updateUser } from '../controllers/userController.js'
-import { verifyUser } from '../middleware/tokenMiddleware.js'
+import { updateUser, allUsers } from '../controllers/userController.js'
+import { verifyUser, verifyAdmin } from '../middleware/tokenMiddleware.js'
 
 const router = express.Router()
 
-router.put('/:id', updateUser)
+router.get('/', verifyAdmin, allUsers)
+router.put('/:id', verifyUser, updateUser)
 
 export default router

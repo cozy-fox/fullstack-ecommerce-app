@@ -9,28 +9,44 @@ const initialState = {
     order_loading: false
 }
 
-//create new order
-// export const newOrder = createAsyncThunk(
-//     'orderSlice/new',
-//     async (orderData, thunkAPI) => {
-//         try {
-//             const userId = thunkAPI.getState().auth.user?._id
-//             return await services.createOrder(`/order/${userId}`, orderData)
-//         } catch (err) {
-//             const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
-//             return thunkAPI.rejectWithValue(message)
-//         }
-//     }
-// )
-
 //all orders
-// export const allOrders = createAsyncThunk(
-//     'orderSlice/all',
-//     async (_, thunkAPI) => {
-//         const userId = thunkAPI.getState().auth.user?._id
-//         return await services.orders(`/order/${userId}`)
-//     }
-// )
+export const allOrders = createAsyncThunk(
+    'orderSlice/all',
+    async (_, thunkAPI) => {
+        try {
+            return await services.orders(`/order`)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+//update order
+export const updateOrder = createAsyncThunk(
+    'orderSlice/update',
+    async (orderData, thunkAPI) => {
+        try {
+            return await services.updateOrder(`/order`, orderData)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+//delete order
+export const deleteOrder = createAsyncThunk(
+    'orderSlice/delete',
+    async (orderId, thunkAPI) => {
+        try {
+            return await services.deleteOrder(`/order/${orderId}`)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 const orderSlice = createSlice({
     name: 'order',
@@ -44,23 +60,43 @@ const orderSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // builder
-        // .addCase(newOrder.fulfilled, (state, action) => {
-        //     state.order_message = 'Successfully ordered'
-        //     state.order_success = true
-        //     state.orders = [action.payload, ...state.orders]
-        // })
-        // .addCase(newOrder.rejected, (state, action) => {
-        //     state.order_message = action.payload
-        //     state.order_error = true
-        // })
-        // .addCase(allOrders.pending, (state) => {
-        //     state.order_loading = true
-        // })
-        // .addCase(allOrders.fulfilled, (state, action) => {
-        //     state.order_loading = false
-        //     state.orders = action.payload
-        // })
+        builder
+            .addCase(allOrders.pending, (state) => {
+                state.order_loading = true
+            })
+            .addCase(allOrders.fulfilled, (state, action) => {
+                state.order_loading = false
+                state.orders = action.payload
+            })
+            .addCase(allOrders.rejected, (state, action) => {
+                state.order_loading = false
+                state.order_message = action.payload
+            })
+            .addCase(updateOrder.fulfilled, (state, action) => {
+
+                state.orders = state.orders.map((order) => {
+                    if (order._id === action.payload.orderId) {
+                        order.deliveryStatus = action.payload.deliveryStatus
+                    }
+                    return order
+                })
+                state.order_success = true
+                state.order_message = action.payload.message
+
+            })
+            .addCase(updateOrder.rejected, (state, action) => {
+                state.order_error = true
+                state.order_message = action.payload
+            })
+            .addCase(deleteOrder.fulfilled, (state, action) => {
+                state.orders = state.orders.filter((order) => (order._id !== action.payload.orderId))
+                state.order_success = true
+                state.order_message = action.payload.message
+            })
+            .addCase(deleteOrder.rejected, (state, action) => {
+                state.order_error = true
+                state.order_message = action.payload
+            })
     }
 })
 

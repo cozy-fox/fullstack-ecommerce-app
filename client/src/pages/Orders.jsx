@@ -52,7 +52,7 @@ export default function Order() {
                                             </p>
                                             <p className="text-gray-500 text-xl font-medium">
                                                 delivery status:
-                                                <span className={`${order.deliverStatus === 'Pending' ? 'text-orange-500' : order.deliverStatus === 'Fulfilled' ? 'text-green-500' : 'text-red-500'}`}>
+                                                <span className={`${order.deliveryStatus === 'Pending' ? 'text-orange-500' : order.deliveryStatus === 'Fulfilled' ? 'text-green-600' : 'text-red-500'}`}>
                                                     {` ${order.deliveryStatus}`}
                                                 </span>
                                             </p>

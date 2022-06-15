@@ -2,6 +2,14 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import bcrypt from 'bcryptjs'
 
+// @desc   all users
+// @route  GET api/user/
+// @access Private
+export const allUsers = asyncHandler(async (req, res) => {
+    const allUsers = await User.find()
+    res.status(200).json(allUsers)
+})
+
 // @desc   update user
 // @route  PUT api/user/:id
 // @access Private

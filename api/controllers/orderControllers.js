@@ -3,6 +3,14 @@ import Order from '../models/orderModel.js'
 import Cart from '../models/cartModel.js'
 import Product from '../models/productModel.js'
 
+// @desc   get all order
+// @route  GET api/order/
+// @access Private
+export const allOrders = asyncHandler(async (req, res) => {
+    const orders = await Order.find().sort({ createdAt: -1 })
+    res.status(200).json(orders)
+})
+
 // @desc   get clients order
 // @route  GET api/order/:userId
 // @access Private
@@ -28,4 +36,22 @@ export const createOrder = asyncHandler(async (req, res) => {
     let newOrder = new Order({ userId, name, email, number, address, orders, totalPrice, deliveryStatus, paymentInfo })
     newOrder = await newOrder.save()
     res.status(200).json(newOrder)
+})
+
+// @desc   update order
+// @route  PUT api/order/
+// @access Private
+export const updateOrder = asyncHandler(async (req, res) => {
+    const { orderId, deliveryStatus } = req.body
+    await Order.findByIdAndUpdate(orderId, { $set: { deliveryStatus } })
+    res.status(200).json({ orderId, deliveryStatus, message: 'Updated successfully' })
+})
+
+// @desc   delete order
+// @route  DELETE api/order/:orderId
+// @access Private
+export const deleteOrder = asyncHandler(async (req, res) => {
+    const { orderId } = req.params
+    await Order.deleteOne({ _id: orderId })
+    res.status(200).json({ orderId, message: 'Deleted successfully' })
 })
