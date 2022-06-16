@@ -17,3 +17,11 @@ export const storeMessage = asyncHandler(async (req, res) => {
     await storeMessage.save()
     res.status(201).json({ message: 'Successfully sent' })
 })
+
+// @desc   get all message
+// @route  GET api/message/
+// @access Private
+export const allMessages = asyncHandler(async (req, res) => {
+    const messages = await Message.find().sort({ createdAt: -1 })
+    res.status(200).json(messages)
+})

@@ -42,7 +42,19 @@ async function allUsers(url) {
     const res = await axios.get(url)
     return res.data
 }
+
+async function deleteUser(url) {
+    const res = await axios.delete(url)
+    return res.data
+}
 //user services
 
-const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers }
+//message services
+async function getMessages(url) {
+    const res = await axios.get(url)
+    return res.data
+}
+//message services
+
+const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages }
 export default services

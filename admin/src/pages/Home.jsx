@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 
 export default function Home() {
     const { orders } = useSelector(state => state.order)
+    const { users } = useSelector(state => state.user)
+    const { allMessages } = useSelector(state => state.messages)
 
     const pendingAmount = orders.reduce((acc, item) => {
         if (item.deliveryStatus === 'Pending') return item.totalPrice + acc
@@ -13,6 +15,16 @@ export default function Home() {
 
     const fulfilledAmount = orders.reduce((acc, item) => {
         if (item.deliveryStatus === 'Fulfilled') return item.totalPrice + acc
+        return acc
+    }, 0)
+
+    const totalUsers = users.reduce((acc, item) => {
+        if (item.isAdmin) return acc
+        return acc + 1
+    }, 0)
+
+    const totalAdmin = users.reduce((acc, item) => {
+        if (item.isAdmin) return acc + 1
         return acc
     }, 0)
 
@@ -62,7 +74,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-2 border-solid border-gray-800 rounded-lg p-4 bg-white">
-                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">4</h2>
+                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">{totalUsers}</h2>
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         total users
                     </div>
@@ -72,7 +84,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-2 border-solid border-gray-800 rounded-lg p-4 bg-white">
-                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">1</h2>
+                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">{totalAdmin}</h2>
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         total admins
                     </div>
@@ -82,7 +94,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-2 border-solid border-gray-800 rounded-lg p-4 bg-white">
-                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">5</h2>
+                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">{users.length}</h2>
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         total accounts
                     </div>
@@ -92,7 +104,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-2 border-solid border-gray-800 rounded-lg p-4 bg-white">
-                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">5</h2>
+                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">{allMessages.length}</h2>
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         total messages
                     </div>

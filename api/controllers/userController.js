@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 // @route  GET api/user/
 // @access Private
 export const allUsers = asyncHandler(async (req, res) => {
-    const allUsers = await User.find()
+    const allUsers = await User.find({}, { password: 0 })
     res.status(200).json(allUsers)
 })
 
@@ -51,4 +51,13 @@ export const updateUser = asyncHandler(async (req, res) => {
         expires: new Date(new Date().getTime() + (86409000 / 15))
     })
     res.status(200).json(other)
+})
+
+// @desc   delete a user
+// @route  DELETE api/user/:id
+// @access Private
+export const deleteUser = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    await User.deleteOne({ _id: id })
+    res.status(200).json({ id, message: 'Deleted successfully' })
 })

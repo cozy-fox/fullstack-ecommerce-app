@@ -8,7 +8,10 @@ import Login from './pages/Login';
 import { useSelector, useDispatch } from 'react-redux';
 import Protected from './pages/Protected';
 import { allOrders } from './slices/orderSlice'
+import { allUsers } from './slices/userSlice'
+import { usersMessages } from './slices/messageSlice'
 import Orders from './pages/Orders';
+import Users from './pages/Users';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -17,6 +20,8 @@ function App() {
   useEffect(() => {
     if (user) {
       dispatch(allOrders())
+      dispatch(allUsers())
+      dispatch(usersMessages())
     }
   }, [user, dispatch])
 
@@ -42,6 +47,14 @@ function App() {
               element={
                 <Protected user={user}>
                   <Orders />
+                </Protected>
+              }
+            />
+            <Route
+              path="users"
+              element={
+                <Protected user={user}>
+                  <Users />
                 </Protected>
               }
             />
