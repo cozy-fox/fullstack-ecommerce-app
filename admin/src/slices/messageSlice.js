@@ -22,6 +22,19 @@ export const usersMessages = createAsyncThunk(
     }
 )
 
+//delete a message
+export const deleteMsg = createAsyncThunk(
+    'messageSlice/delete',
+    async (messageId, thunkAPI) => {
+        try {
+            return await services.deleteMessage(`/message/${messageId}`)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 const messageSlice = createSlice({
     name: 'message',
     initialState,
@@ -45,6 +58,15 @@ const messageSlice = createSlice({
             .addCase(usersMessages.rejected, (state, action) => {
                 state.message = action.payload
                 state.message_loading = false
+            })
+            .addCase(deleteMsg.fulfilled, (state, action) => {
+                state.allMessages = state.allMessages.filter(message => (message._id !== action.payload.messageId))
+                state.message_success = true
+                state.message = action.payload.message
+            })
+            .addCase(deleteMsg.rejected, (state, action) => {
+                state.message_error = true
+                state.message = action.payload
             })
     }
 })

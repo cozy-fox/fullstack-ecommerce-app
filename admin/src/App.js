@@ -12,6 +12,7 @@ import { allUsers } from './slices/userSlice'
 import { usersMessages } from './slices/messageSlice'
 import Orders from './pages/Orders';
 import Users from './pages/Users';
+import Messages from './pages/Messages';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -55,6 +56,14 @@ function App() {
               element={
                 <Protected user={user}>
                   <Users />
+                </Protected>
+              }
+            />
+            <Route
+              path="messages"
+              element={
+                <Protected user={user}>
+                  <Messages />
                 </Protected>
               }
             />

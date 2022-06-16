@@ -49,12 +49,18 @@ async function deleteUser(url) {
 }
 //user services
 
+
 //message services
 async function getMessages(url) {
     const res = await axios.get(url)
     return res.data
 }
+
+async function deleteMessage(url) {
+    const res = await axios.delete(url)
+    return res.data
+}
 //message services
 
-const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages }
+const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages, deleteMessage }
 export default services
