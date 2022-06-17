@@ -4,6 +4,7 @@ import authReducer from './slices/authSlice'
 import userReducer from './slices/userSlice'
 import messageReducer from './slices/messageSlice'
 import productReducer from './slices/productSlice'
+import categoryReducer from './slices/categorySlice'
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         auth: authReducer,
         user: userReducer,
         messages: messageReducer,
-        product: productReducer
+        product: productReducer,
+        categories: categoryReducer
     }
 })
 

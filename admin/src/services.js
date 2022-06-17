@@ -70,5 +70,12 @@ async function allProducts(url) {
 }
 //product services
 
-const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages, deleteMessage, allProducts }
+//category services
+async function allCategories(url) {
+    const res = await axios.get(url)
+    return res.data
+}
+//category services
+
+const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages, deleteMessage, allProducts, allCategories }
 export default services

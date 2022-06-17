@@ -11,6 +11,7 @@ import { allOrders } from './slices/orderSlice'
 import { allUsers } from './slices/userSlice'
 import { usersMessages } from './slices/messageSlice'
 import { allProducts } from './slices/productSlice'
+import { allCategories } from './slices/categorySlice'
 import Orders from './pages/Orders';
 import Users from './pages/Users';
 import Messages from './pages/Messages';
@@ -26,6 +27,7 @@ function App() {
       dispatch(allUsers())
       dispatch(usersMessages())
       dispatch(allProducts())
+      dispatch(allCategories())
     }
   }, [user, dispatch])
 
