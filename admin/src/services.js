@@ -62,5 +62,13 @@ async function deleteMessage(url) {
 }
 //message services
 
-const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages, deleteMessage }
+
+//product services
+async function allProducts(url) {
+    const res = await axios.get(url)
+    return res.data
+}
+//product services
+
+const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages, deleteMessage, allProducts }
 export default services

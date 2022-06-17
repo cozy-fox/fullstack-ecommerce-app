@@ -10,9 +10,11 @@ import Protected from './pages/Protected';
 import { allOrders } from './slices/orderSlice'
 import { allUsers } from './slices/userSlice'
 import { usersMessages } from './slices/messageSlice'
+import { allProducts } from './slices/productSlice'
 import Orders from './pages/Orders';
 import Users from './pages/Users';
 import Messages from './pages/Messages';
+import Products from './pages/Products';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -23,6 +25,7 @@ function App() {
       dispatch(allOrders())
       dispatch(allUsers())
       dispatch(usersMessages())
+      dispatch(allProducts())
     }
   }, [user, dispatch])
 
@@ -64,6 +67,14 @@ function App() {
               element={
                 <Protected user={user}>
                   <Messages />
+                </Protected>
+              }
+            />
+            <Route
+              path="products"
+              element={
+                <Protected user={user}>
+                  <Products />
                 </Protected>
               }
             />

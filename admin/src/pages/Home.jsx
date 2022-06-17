@@ -7,6 +7,7 @@ export default function Home() {
     const { orders } = useSelector(state => state.order)
     const { users } = useSelector(state => state.user)
     const { allMessages } = useSelector(state => state.messages)
+    const { products } = useSelector(state => state.product)
 
     const pendingAmount = orders.reduce((acc, item) => {
         if (item.deliveryStatus === 'Pending') return item.totalPrice + acc
@@ -64,7 +65,7 @@ export default function Home() {
                 </div>
 
                 <div className="border-2 border-solid border-gray-800 rounded-lg p-4 bg-white">
-                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">10</h2>
+                    <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">{products.length}</h2>
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         products added
                     </div>
@@ -78,7 +79,7 @@ export default function Home() {
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         total users
                     </div>
-                    <Link to="/accounts">
+                    <Link to="/users">
                         <button className="btn__style capitalize bg-green-600 py-4 w-full">see accounts</button>
                     </Link>
                 </div>
@@ -88,7 +89,7 @@ export default function Home() {
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         total admins
                     </div>
-                    <Link to="/accounts">
+                    <Link to="/users">
                         <button className="btn__style capitalize bg-green-600 py-4 w-full">see accounts</button>
                     </Link>
                 </div>
@@ -98,7 +99,7 @@ export default function Home() {
                     <div className="pending mb-2 border-2 border-solid border-gray-800 rounded-lg p-4 text-2xl text-center font-medium text-gray-800">
                         total accounts
                     </div>
-                    <Link to="/accounts">
+                    <Link to="/users">
                         <button className="btn__style capitalize bg-green-600 py-4 w-full">see accounts</button>
                     </Link>
                 </div>
