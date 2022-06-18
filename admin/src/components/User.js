@@ -1,11 +1,27 @@
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 import { deleteUser } from '../slices/userSlice'
+import deleteImage from '../utils/deleteImg'
+import Loader from './Loader'
 
 export default function User({ user }) {
     const dispatch = useDispatch()
+    const [isLoading, setIsLoading] = useState(false)
 
-    function deleteUserAcc() {
-        dispatch(deleteUser(user._id))
+    async function deleteUserAcc() {
+        setIsLoading(true)
+        try {
+            if (!user.image.includes('guest.webp')) {
+                await deleteImage(user._id)
+            }
+            dispatch(deleteUser(user._id))
+            setIsLoading(false)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            toast(message, { type: 'error', autoClose: 2000 })
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -27,7 +43,11 @@ export default function User({ user }) {
                 user type:
                 <span className="text-green-500"> {user.isAdmin ? 'admin' : 'user'}</span>
             </p>
-            <button onClick={deleteUserAcc} className="flex-grow py-4 w-full bg-orange-600 btn__style cursor-pointer capitalize">delete</button>
+            {isLoading ? <Loader customCss="mb-5" />
+                : (
+                    <button onClick={deleteUserAcc} className="flex-grow py-4 w-full bg-orange-600 btn__style cursor-pointer capitalize">delete</button>
+                )
+            }
         </div>
     )
 }

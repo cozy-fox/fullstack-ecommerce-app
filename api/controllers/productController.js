@@ -5,8 +5,8 @@ import Product from '../models/productModel.js'
 // @route  POST api/product/create
 // @access Private
 export const createProduct = asyncHandler(async (req, res) => {
-    const { title, inStock, price, productImage, categories, description, latest } = req.body
-    let newProduct = new Product({ title, inStock, price, productImage, categories, latest })
+    const { title, inStock, price, productImage, categories, description, latest, imageName } = req.body
+    let newProduct = new Product({ title, inStock, price, productImage, categories, latest, imageName })
     if (description) newProduct.description = description
     newProduct = await newProduct.save()
     res.status(200).json(newProduct)

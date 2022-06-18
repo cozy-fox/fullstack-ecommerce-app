@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import SecLayout from '../components/SecLayout'
 import SecTitle from '../components/SecTitle'
 import { useSelector, useDispatch } from 'react-redux'
@@ -9,14 +9,28 @@ import { toast } from 'react-toastify'
 import { productReset } from '../slices/orderSlice'
 import Product from '../components/Product'
 import { useForm } from "react-hook-form";
+import uploadImage from '../utils/uploadImg'
+import { v1 } from 'uuid'
 
 export default function Products() {
     const { products, product_loading, product_success, product_error, product_message } = useSelector(state => state.product)
     const { categories } = useSelector(state => state.categories)
     const { register, handleSubmit, reset } = useForm();
+    const [isLoading, setIsLoading] = useState(false)
 
-    function createProduct(data) {
-        console.log(data)
+    async function createProduct(data) {
+        const { title, price, inStock, productImage, description } = data
+
+        const categoriesSlug = categories.map(category => category.slug)
+        const selectCategories = categoriesSlug.filter(slug => (data[slug]))
+
+        if (!productImage[0]) return toast("Product image is required!!!", { type: 'info', autoClose: 2000 })
+        if (!selectCategories.length) return toast("At least one category in required!!!", { type: 'info', autoClose: 2000 })
+
+        setIsLoading(true)
+        const imgUrl = await uploadImage(productImage[0], v1())
+        console.log(imgUrl)
+        // dispatch(updateUser({ name, email, oldPass, newPass, image: imgUrl }))
     }
 
     return (
@@ -28,11 +42,11 @@ export default function Products() {
                 <form className="reviews mt-6 w-[60rem] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(createProduct)}>
                     <div className="fields grid grid-cols-2 gap-4">
 
-                        <input {...register("title")} type="text" placeholder="enter product name" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
+                        <input {...register("title", { required: true })} type="text" placeholder="enter product name" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
 
-                        <input {...register("price")} type="number" placeholder="enter product price" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
+                        <input {...register("price", { required: true })} type="number" placeholder="enter product price" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
 
-                        <input {...register("inStock")} type="number" placeholder="stock" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
+                        <input {...register("inStock", { required: true })} type="number" placeholder="stock" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
 
                         <input {...register("productImage")} type="file" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-1 text-xl text-gray-800" />
 
@@ -71,7 +85,7 @@ export default function Products() {
                 {product_loading
                     ? <Loader />
                     : products.length ? (
-                        <div className="flex flex-wrap justify-center gap-6 mt-6">
+                        <div className="grid grid-cols-4 gap-6 mt-6">
                             {
                                 products.map(product => (
                                     <Product key={product._id} product={product} />

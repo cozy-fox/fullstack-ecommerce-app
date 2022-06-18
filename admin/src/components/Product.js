@@ -1,7 +1,29 @@
-import React from 'react'
 
-export default function Product() {
+export default function Product({ product }) {
     return (
-        <div>Product</div>
+        <div className={`productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4`}>
+            <div className="productImage relative w-full h-80">
+                <div className="price absolute top-0 left-0 bg-red-500 text-white text-lg p-2 rounded-lg">
+                    $<span className="text-white text-2xl font-medium px-1">{product.price}</span>/-
+                </div>
+                <img src={product.productImage} alt="" className="object-contain w-full h-80" />
+            </div>
+            <h3 className="font-semibold text-2xl text-gray-600 text-center pt-4 pb-1 lowercase">{product.title}</h3>
+            <div className="categories flex gap-3 justify-center flex-wrap">
+                {
+                    product.categories.map((category, index) => {
+                        if (category && category !== 'all') {
+                            return <p key={index} className="font-medium text-xl text-green-500 text-center lowercase">{category}</p>
+                        }
+                        return null
+                    })
+                }
+            </div>
+            {product.description && <p className="font-medium text-xl text-gray-500 text-center mt-2">{product.description}</p>}
+            <div className="flex gap-4 mt-5">
+                <button className="flex-grow py-4 w-full bg-yellow-500 btn__style cursor-pointer capitalize">update</button>
+                <button className="flex-grow py-4 w-full bg-red-600 btn__style cursor-pointer capitalize">delete</button>
+            </div>
+        </div>
     )
 }

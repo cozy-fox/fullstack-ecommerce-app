@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import Error from '../components/Error'
@@ -23,13 +23,10 @@ export default function Users() {
             <SecTitle name="user accounts" />
             {users_loading
                 ? <Loader />
-                : users.length ? (
+                : users.filter(user => !user.isAdmin).length ? (
                     <div className="flex flex-wrap justify-center gap-6 mt-6">
                         {
-                            users.map(user => {
-                                if (user.isAdmin) return null
-                                return <User key={user._id} user={user} />
-                            })
+                            users.map(user => (<User key={user._id} user={user} />))
                         }
                     </div>
                 ) : (

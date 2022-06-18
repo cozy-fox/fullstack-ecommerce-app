@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    imageName: {
+        type: String,
+        required: true
+    },
     categories: {
         type: [String],
         validate: {
