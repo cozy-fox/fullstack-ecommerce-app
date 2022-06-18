@@ -9,7 +9,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     let newProduct = new Product({ title, inStock, price, productImage, categories, latest, imageName })
     if (description) newProduct.description = description
     newProduct = await newProduct.save()
-    res.status(200).json(newProduct)
+    res.status(201).json({ newProduct, message: 'Successfully created' })
 })
 
 // @desc   get all products
@@ -27,4 +27,13 @@ export const getProduct = asyncHandler(async (req, res) => {
     const { slug } = req.params
     const product = await Product.findOne({ slug })
     res.status(200).json(product)
+})
+
+// @desc   delete a product
+// @route  DELETE api/product/:productId
+// @access Private
+export const deleteProduct = asyncHandler(async (req, res) => {
+    const { productId } = req.params
+    await Product.deleteOne({ _id: productId })
+    res.status(200).json({ productId, message: "Successfully deleted" })
 })

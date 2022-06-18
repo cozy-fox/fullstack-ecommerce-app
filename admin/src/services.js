@@ -1,4 +1,7 @@
 import axios from 'axios'
+import uploadImage from './utils/uploadImg'
+import deleteImage from './utils/deleteImg'
+import { v1 } from 'uuid'
 
 //order services
 async function orders(url) {
@@ -68,7 +71,22 @@ async function allProducts(url) {
     const res = await axios.get(url)
     return res.data
 }
+
+async function createProduct(url, data) {
+    const imageName = v1()
+    const imgUrl = await uploadImage(data.productImage[0], imageName)
+
+    const res = await axios.post(url, { ...data, imageName, productImage: imgUrl })
+    return res.data
+}
+
+async function removeProduct(url, imageLocation) {
+    await deleteImage(imageLocation)
+    const res = await axios.delete(url)
+    return res.data
+}
 //product services
+
 
 //category services
 async function allCategories(url) {
@@ -77,5 +95,20 @@ async function allCategories(url) {
 }
 //category services
 
-const services = { orders, loginService, logoutService, updateUser, updateOrder, deleteOrder, allUsers, deleteUser, getMessages, deleteMessage, allProducts, allCategories }
+const services = {
+    orders,
+    loginService,
+    logoutService,
+    updateUser,
+    updateOrder,
+    deleteOrder,
+    allUsers,
+    deleteUser,
+    getMessages,
+    deleteMessage,
+    allProducts,
+    allCategories,
+    createProduct,
+    removeProduct
+}
 export default services

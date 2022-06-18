@@ -1,36 +1,50 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import SecLayout from '../components/SecLayout'
 import SecTitle from '../components/SecTitle'
 import { useSelector, useDispatch } from 'react-redux'
 import Loader from '../components/Loader'
 import Error from '../components/Error'
-import Order from '../components/Order'
 import { toast } from 'react-toastify'
-import { productReset } from '../slices/orderSlice'
+import { productReset, newProduct } from '../slices/productSlice'
 import Product from '../components/Product'
 import { useForm } from "react-hook-form";
-import uploadImage from '../utils/uploadImg'
-import { v1 } from 'uuid'
 
 export default function Products() {
-    const { products, product_loading, product_success, product_error, product_message } = useSelector(state => state.product)
+    const { products, product_loading, product_success, product_error, product_message, create_product_loading, selected_product_loading } = useSelector(state => state.product)
     const { categories } = useSelector(state => state.categories)
     const { register, handleSubmit, reset } = useForm();
-    const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (product_success) {
+            toast(product_message, { type: 'success', autoClose: 2000 })
+            reset()
+        }
+        if (product_error) toast(product_message, { type: 'error', autoClose: 2000 })
+        if (product_success || product_error) dispatch(productReset())
+    }, [product_message, product_success, product_error, dispatch, reset])
+
 
     async function createProduct(data) {
-        const { title, price, inStock, productImage, description } = data
+        const { title, price, inStock, productImage, description, latest } = data
 
         const categoriesSlug = categories.map(category => category.slug)
-        const selectCategories = categoriesSlug.filter(slug => (data[slug]))
+        const selectedCategories = categoriesSlug.filter(slug => (data[slug]))
 
         if (!productImage[0]) return toast("Product image is required!!!", { type: 'info', autoClose: 2000 })
-        if (!selectCategories.length) return toast("At least one category in required!!!", { type: 'info', autoClose: 2000 })
+        if (!selectedCategories.length) return toast("At least one category is required!!!", { type: 'info', autoClose: 2000 })
 
-        setIsLoading(true)
-        const imgUrl = await uploadImage(productImage[0], v1())
-        console.log(imgUrl)
-        // dispatch(updateUser({ name, email, oldPass, newPass, image: imgUrl }))
+        const productData = {
+            title,
+            price,
+            inStock,
+            description,
+            productImage,
+            latest,
+            categories: [...selectedCategories, 'all']
+        }
+
+        dispatch(newProduct(productData))
     }
 
     return (
@@ -61,21 +75,21 @@ export default function Products() {
                                     )
                                 })
                             }
+                            <div className="flex gap-1 items-center">
+                                <input type="checkbox" id="latest" {...register('latest')} />
+                                <label htmlFor="latest" className="text-gray-500 font-medium text-xl inline-block select-none"> Latest</label>
+                            </div>
                         </div>
 
                         <textarea {...register("description")} className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg col-span-2 p-3 text-xl text-gray-800 h-80 resize-none" />
 
                     </div>
 
-                    <input type="submit" value="Add Product" className="py-3 w-full bg-green-600 btn__style cursor-pointer mt-4" />
-                    {/* {
-                            loading || isLoading
-                                ? <Loader customCss="mb-4" /> :
-                                <div className="flex gap-4 mt-5">
-                                    <input type="submit" value="Update Profile" className="flex-grow py-4 w-full bg-green-600 btn__style cursor-pointer" />
-                                    <button onClick={() => navigate('/')} className="flex-grow py-4 w-full bg-yellow-600 btn__style cursor-pointer capitalize">cancel</button>
-                                </div>
-                        } */}
+                    {
+
+                        create_product_loading ? <Loader customCss="mb-4" /> :
+                            <input type="submit" value="Add Product" className="py-3 w-full bg-green-600 btn__style cursor-pointer mt-4" />
+                    }
                 </form>
 
             </div>
@@ -88,12 +102,12 @@ export default function Products() {
                         <div className="grid grid-cols-4 gap-6 mt-6">
                             {
                                 products.map(product => (
-                                    <Product key={product._id} product={product} />
+                                    <Product key={product._id} product={product} selectedLoading={selected_product_loading} />
                                 ))
                             }
                         </div>
                     ) : (
-                        <Error errMsg="no products placed yet" />
+                        <Error errMsg="no products yet" />
                     )
                 }
             </div>

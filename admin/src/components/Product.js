@@ -1,7 +1,21 @@
+import { useDispatch } from 'react-redux'
+import { productLoading, deleteProduct } from '../slices/productSlice'
+import Loader from './Loader'
 
-export default function Product({ product }) {
+export default function Product({ product, selectedLoading }) {
+    const dispatch = useDispatch()
+
+    function deleteAProduct() {
+        const productData = {
+            productId: product._id,
+            imageName: product.imageName
+        }
+        dispatch(productLoading(product._id))
+        dispatch(deleteProduct(productData))
+    }
+
     return (
-        <div className={`productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4`}>
+        <div className={`productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4 h-fit`}>
             <div className="productImage relative w-full h-80">
                 <div className="price absolute top-0 left-0 bg-red-500 text-white text-lg p-2 rounded-lg">
                     $<span className="text-white text-2xl font-medium px-1">{product.price}</span>/-
@@ -20,10 +34,15 @@ export default function Product({ product }) {
                 }
             </div>
             {product.description && <p className="font-medium text-xl text-gray-500 text-center mt-2">{product.description}</p>}
-            <div className="flex gap-4 mt-5">
-                <button className="flex-grow py-4 w-full bg-yellow-500 btn__style cursor-pointer capitalize">update</button>
-                <button className="flex-grow py-4 w-full bg-red-600 btn__style cursor-pointer capitalize">delete</button>
-            </div>
+            {
+                selectedLoading === product._id ? <Loader mt="mt-5" />
+                    : (
+                        <div className="flex gap-4 mt-5">
+                            <button className="flex-grow py-4 w-full bg-yellow-500 btn__style cursor-pointer capitalize">update</button>
+                            <button onClick={deleteAProduct} className="flex-grow py-4 w-full bg-red-600 btn__style cursor-pointer capitalize">delete</button>
+                        </div>
+                    )
+            }
         </div>
     )
 }
