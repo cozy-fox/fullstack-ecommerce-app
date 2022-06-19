@@ -8,7 +8,7 @@ export default function MainHeader() {
         <header className="header py-6 bg-white shadow-md sticky top-0 left-0 z-50">
             <div className="wrapper max-w-screen-xl mx-auto flex justify-between items-center">
                 <Link to="/">
-                    <h2 className="text-gray-600 text-3xl font-normal cursor-pointer">Groco<span className="text-green-500">.</span></h2>
+                    <h2 className="text-gray-600 text-3xl font-normal cursor-pointer">Admin<span className="text-green-500">Panel</span></h2>
                 </Link>
 
                 <nav className="space-x-6">

@@ -42,7 +42,20 @@ export const deleteProduct = createAsyncThunk(
     'productSlice/delete',
     async (productData, thunkAPI) => {
         try {
-            return await services.removeProduct(`/product/${productData.productId}`, productData.imageName)
+            return await services.removeProduct(`/product/${productData.productSlug}`, productData.imageName)
+        } catch (err) {
+            const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+//update a product
+export const updateProduct = createAsyncThunk(
+    'productSlice/update',
+    async (productData, thunkAPI) => {
+        try {
+            return await services.updateProduct(`/product/${productData.productSlug}`, productData)
         } catch (err) {
             const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
             return thunkAPI.rejectWithValue(message)
@@ -91,12 +104,26 @@ const productSlice = createSlice({
                 state.product_message = action.payload
             })
             .addCase(deleteProduct.fulfilled, (state, action) => {
-                state.products = state.products.filter(product => product._id !== action.payload.productId)
+                state.products = state.products.filter(product => product.slug !== action.payload.slug)
                 state.selected_product_loading = null
                 state.product_success = true
                 state.product_message = action.payload.message
             })
             .addCase(deleteProduct.rejected, (state, action) => {
+                state.selected_product_loading = null
+                state.product_error = true
+                state.product_message = action.payload
+            })
+            .addCase(updateProduct.fulfilled, (state, action) => {
+                state.products = state.products.map(product => {
+                    if (product._id === action.payload.updatedProduct._id) return action.payload.updatedProduct
+                    return product
+                })
+                state.selected_product_loading = null
+                state.product_success = true
+                state.product_message = action.payload.message
+            })
+            .addCase(updateProduct.rejected, (state, action) => {
                 state.selected_product_loading = null
                 state.product_error = true
                 state.product_message = action.payload

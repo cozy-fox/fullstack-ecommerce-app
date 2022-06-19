@@ -85,6 +85,17 @@ async function removeProduct(url, imageLocation) {
     const res = await axios.delete(url)
     return res.data
 }
+
+async function updateProduct(url, data) {
+    let imgUrl
+    if (data.productImage[0]) {
+        imgUrl = await uploadImage(data.productImage[0], data.imageName)
+    }
+    const { slug, imageName, productImage, ...productData } = data
+    if (imgUrl) productData.productImage = imgUrl
+    const res = await axios.put(url, productData)
+    return res.data
+}
 //product services
 
 
@@ -109,6 +120,7 @@ const services = {
     allProducts,
     allCategories,
     createProduct,
-    removeProduct
+    removeProduct,
+    updateProduct
 }
 export default services

@@ -16,6 +16,7 @@ import Orders from './pages/Orders';
 import Users from './pages/Users';
 import Messages from './pages/Messages';
 import Products from './pages/Products';
+import Update from './pages/Update';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -77,6 +78,14 @@ function App() {
               element={
                 <Protected user={user}>
                   <Products />
+                </Protected>
+              }
+            />
+            <Route
+              path="products/:slug"
+              element={
+                <Protected user={user}>
+                  <Update />
                 </Protected>
               }
             />

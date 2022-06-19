@@ -1,16 +1,17 @@
 import { useDispatch } from 'react-redux'
 import { productLoading, deleteProduct } from '../slices/productSlice'
 import Loader from './Loader'
+import { Link } from 'react-router-dom'
 
 export default function Product({ product, selectedLoading }) {
     const dispatch = useDispatch()
 
     function deleteAProduct() {
         const productData = {
-            productId: product._id,
+            productSlug: product.slug,
             imageName: product.imageName
         }
-        dispatch(productLoading(product._id))
+        dispatch(productLoading(product.slug))
         dispatch(deleteProduct(productData))
     }
 
@@ -35,10 +36,12 @@ export default function Product({ product, selectedLoading }) {
             </div>
             {product.description && <p className="font-medium text-xl text-gray-500 text-center mt-2">{product.description}</p>}
             {
-                selectedLoading === product._id ? <Loader mt="mt-5" />
+                selectedLoading === product.slug ? <Loader mt="mt-5" />
                     : (
                         <div className="flex gap-4 mt-5">
-                            <button className="flex-grow py-4 w-full bg-yellow-500 btn__style cursor-pointer capitalize">update</button>
+                            <Link to={`/products/${product.slug}`} className="flex-grow w-full">
+                                <button className="w-full btn__style bg-yellow-500 py-4 capitalize">update</button>
+                            </Link>
                             <button onClick={deleteAProduct} className="flex-grow py-4 w-full bg-red-600 btn__style cursor-pointer capitalize">delete</button>
                         </div>
                     )

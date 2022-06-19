@@ -30,10 +30,19 @@ export const getProduct = asyncHandler(async (req, res) => {
 })
 
 // @desc   delete a product
-// @route  DELETE api/product/:productId
+// @route  DELETE api/product/:slug
 // @access Private
 export const deleteProduct = asyncHandler(async (req, res) => {
-    const { productId } = req.params
-    await Product.deleteOne({ _id: productId })
-    res.status(200).json({ productId, message: "Successfully deleted" })
+    const { slug } = req.params
+    await Product.deleteOne({ slug })
+    res.status(200).json({ slug, message: "Successfully deleted" })
+})
+
+// @desc   update a product
+// @route  PUT api/product/:slug
+// @access Private
+export const updateProduct = asyncHandler(async (req, res) => {
+    const { slug } = req.params
+    const updatedProduct = await Product.findOneAndUpdate({ slug }, { $set: req.body }, { new: true })
+    res.status(200).json({ updatedProduct, message: 'Successfully updated' })
 })
