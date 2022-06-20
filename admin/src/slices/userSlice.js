@@ -4,6 +4,7 @@ import services from '../services'
 const initialState = {
     users: [],
     users_loading: false,
+    selected_users_loading: null,
     users_success: false,
     users_error: false,
     users_message: ''
@@ -25,9 +26,9 @@ export const allUsers = createAsyncThunk(
 //delete a users
 export const deleteUser = createAsyncThunk(
     'userSlice/delete',
-    async (userId, thunkAPI) => {
+    async (userData, thunkAPI) => {
         try {
-            return await services.deleteUser(`/user/${userId}`)
+            return await services.deleteUser(`/user/${userData.userId}`, userData.imageLocation)
         } catch (err) {
             const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
             return thunkAPI.rejectWithValue(message)
@@ -44,6 +45,9 @@ const userSlice = createSlice({
             state.users_message = ''
             state.users_success = false
             state.users_loading = false
+        },
+        usersLoading: (state, action) => {
+            state.selected_users_loading = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -63,13 +67,15 @@ const userSlice = createSlice({
                 state.users = state.users.filter(user => user._id !== action.payload.id)
                 state.users_success = true
                 state.users_message = action.payload.message
+                state.selected_users_loading = null
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 state.users_error = true
                 state.users_message = action.payload
+                state.selected_users_loading = null
             })
     }
 })
 
-export const { usersReset } = userSlice.actions
+export const { usersReset, usersLoading } = userSlice.actions
 export default userSlice.reducer

@@ -46,7 +46,10 @@ async function allUsers(url) {
     return res.data
 }
 
-async function deleteUser(url) {
+async function deleteUser(url, imageLocation) {
+    if (imageLocation) {
+        await deleteImage(imageLocation)
+    }
     const res = await axios.delete(url)
     return res.data
 }

@@ -5,7 +5,7 @@ import { verifyUser, verifyAdmin } from '../middleware/tokenMiddleware.js'
 const router = express.Router()
 
 router.get('/', verifyAdmin, allUsers)
-router.route('/:id')
+router.route('/:userId')
     .put(verifyUser, updateUser)
     .delete(verifyAdmin, deleteUser)
 

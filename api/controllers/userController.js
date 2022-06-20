@@ -11,14 +11,14 @@ export const allUsers = asyncHandler(async (req, res) => {
 })
 
 // @desc   update user
-// @route  PUT api/user/:id
+// @route  PUT api/user/:userId
 // @access Private
 export const updateUser = asyncHandler(async (req, res) => {
-    const { id } = req.params
-    const { name, email, oldPass, newPass, image } = req.body
+    const { userId } = req.params
+    const { name, email, oldPass, newPass, image, imageName } = req.body
 
     if (oldPass) {
-        const user = await User.findById(id)
+        const user = await User.findById(userId)
         const hash = user.password
         const checkPassword = bcrypt.compareSync(oldPass, hash);
         if (!checkPassword) {
@@ -38,9 +38,10 @@ export const updateUser = asyncHandler(async (req, res) => {
     }
     if (image) {
         thingsToUpdate.image = image
+        thingsToUpdate.imageName = imageName
     }
 
-    const newUser = await User.findOneAndUpdate({ _id: id }, { $set: thingsToUpdate }, { new: true, runValidators: true })
+    const newUser = await User.findOneAndUpdate({ _id: userId }, { $set: thingsToUpdate }, { new: true, runValidators: true })
     const { password, isAdmin, ...other } = newUser._doc
     const token = req.cookies.access_token
     res.cookie('access_token', token, {
@@ -54,10 +55,10 @@ export const updateUser = asyncHandler(async (req, res) => {
 })
 
 // @desc   delete a user
-// @route  DELETE api/user/:id
+// @route  DELETE api/user/:userId
 // @access Private
 export const deleteUser = asyncHandler(async (req, res) => {
-    const { id } = req.params
-    await User.deleteOne({ _id: id })
-    res.status(200).json({ id, message: 'Deleted successfully' })
+    const { userId } = req.params
+    await User.deleteOne({ _id: userId })
+    res.status(200).json({ id: userId, message: 'Deleted successfully' })
 })

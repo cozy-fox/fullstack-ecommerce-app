@@ -8,13 +8,7 @@ import jwt from 'jsonwebtoken'
 // @route  POST api/auth/register
 // @access Public
 export const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, image } = req.body
-    const { userIdForUpdate } = req.query
-
-    if (userIdForUpdate) {
-        await User.findOneAndUpdate({ _id: userIdForUpdate }, { $set: { image } }, { runValidators: true })
-        res.status(200).json('successfully updated image')
-    }
+    const { name, email, password, image, imageName } = req.body
 
     if (!name || !email || !password) {
         res.status(400)
@@ -35,6 +29,11 @@ export const registerUser = asyncHandler(async (req, res) => {
         email,
         password: hash
     })
+
+    if (image) {
+        newUser.image = image
+        newUser.imageName = imageName
+    }
 
     newUser = await newUser.save()
     res.status(201).json({ userId: newUser._id })

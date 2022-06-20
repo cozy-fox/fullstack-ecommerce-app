@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
@@ -8,22 +8,22 @@ import { useForm } from "react-hook-form";
 import uploadImage from '../utils/uploadImg'
 import { updateUser, resetState } from '../slices/authSlice'
 
+const defaultImage = 'https://firebasestorage.googleapis.com/v0/b/fullstack-ecommerce-f3adb.appspot.com/o/guest.webp?alt=media&token=da29d69d-0134-4b56-a295-55b348de4cbe'
+
 export default function Profile({ user }) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { register, handleSubmit, reset } = useForm();
     const { message, loading, error, success } = useSelector(state => state.auth)
-    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if (success) {
             toast(message, { type: 'success', autoClose: 2000 })
             reset()
         }
-        if (!loading) setIsLoading(false)
         if (error) toast(message, { type: 'error', autoClose: 2000 })
         if (success || error) dispatch(resetState())
-    }, [message, success, error, loading, dispatch, reset])
+    }, [message, success, error, dispatch, reset])
 
     async function updateProfile(data) {
         const { name, email, oldPass, newPass, confirmPass, image } = data
@@ -42,12 +42,7 @@ export default function Profile({ user }) {
             }
         }
 
-        let imgUrl
-        if (image[0]) {
-            setIsLoading(true)
-            imgUrl = await uploadImage(image[0], user._id)
-        }
-        dispatch(updateUser({ name, email, oldPass, newPass, image: imgUrl }))
+        dispatch(updateUser({ name, email, oldPass, newPass, newImage: image, imageName: user.imageName }))
     }
 
     return (
@@ -55,7 +50,7 @@ export default function Profile({ user }) {
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="update profile" />
                 <form className="reviews mt-6 w-[60rem] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(updateProfile)}>
-                    <img src={user.image} alt="" className="h-56 w-56 rounded-full object-cover mx-auto" />
+                    <img src={user.image ? user.image : defaultImage} alt="" className="h-56 w-56 rounded-full object-cover mx-auto" />
                     <div className="fields grid grid-cols-2 gap-4 mt-6">
 
                         <div className="inputField">
@@ -90,7 +85,7 @@ export default function Profile({ user }) {
 
                     </div>
                     {
-                        loading || isLoading
+                        loading
                             ? <Loader customCss="mb-4" /> :
                             <div className="flex gap-4 mt-5">
                                 <input type="submit" value="Update Profile" className="flex-grow py-4 w-full bg-green-600 btn__style cursor-pointer" />

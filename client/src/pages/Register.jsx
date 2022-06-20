@@ -7,6 +7,7 @@ import axios from 'axios'
 import Loader from '../components/Loader';
 import { useNavigate } from "react-router-dom";
 import uploadImage from '../utils/uploadImg';
+import { v1 } from 'uuid'
 
 export default function Register({ user }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -29,12 +30,24 @@ export default function Register({ user }) {
         setLoading(true)
 
         try {
-            const res = await axios.post('/auth/register', { name, password, email })
-            const userId = res.data.userId
+            const imageName = v1()
+            let imgUrl
+
             if (imageFile[0]) {
-                let imgUrl = await uploadImage(imageFile[0], userId)
-                await axios.post(`/auth/register?userIdForUpdate=${userId}`, { image: imgUrl })
+                imgUrl = await uploadImage(imageFile[0], imageName)
             }
+
+            const userData = {
+                name, password, email
+            }
+
+            if (imgUrl) {
+                userData.image = imgUrl
+                userData.imageName = imageName
+            }
+
+            await axios.post('/auth/register', userData)
+
             setLoading(false)
             reset()
             navigate('/login')

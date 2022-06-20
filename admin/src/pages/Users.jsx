@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import Error from '../components/Error'
@@ -9,7 +9,7 @@ import User from '../components/User'
 import { usersReset } from '../slices/userSlice'
 
 export default function Users() {
-    const { users, users_loading, users_success, users_error, users_message } = useSelector(state => state.user)
+    const { users, users_loading, users_success, users_error, users_message, selected_users_loading } = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -26,7 +26,10 @@ export default function Users() {
                 : users.filter(user => !user.isAdmin).length ? (
                     <div className="flex flex-wrap justify-center gap-6 mt-6">
                         {
-                            users.map(user => (<User key={user._id} user={user} />))
+                            users.map(user => {
+                                if (!user.isAdmin) return <User key={user._id} user={user} selectedLoading={selected_users_loading} />
+                                return null
+                            })
                         }
                     </div>
                 ) : (
