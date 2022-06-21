@@ -17,6 +17,7 @@ import Users from './pages/Users';
 import Messages from './pages/Messages';
 import Products from './pages/Products';
 import Update from './pages/Update';
+import Profile from './pages/Profile';
 
 function App() {
   const { user } = useSelector(state => state.auth)
@@ -86,6 +87,14 @@ function App() {
               element={
                 <Protected user={user}>
                   <Update />
+                </Protected>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <Protected user={user}>
+                  <Profile />
                 </Protected>
               }
             />

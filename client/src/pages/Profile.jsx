@@ -5,7 +5,6 @@ import Loader from '../components/Loader';
 import { useNavigate } from "react-router-dom";
 import SecTitle from '../components/SecTitle'
 import { useForm } from "react-hook-form";
-import uploadImage from '../utils/uploadImg'
 import { updateUser, resetState } from '../slices/authSlice'
 
 const defaultImage = 'https://firebasestorage.googleapis.com/v0/b/fullstack-ecommerce-f3adb.appspot.com/o/guest.webp?alt=media&token=da29d69d-0134-4b56-a295-55b348de4cbe'

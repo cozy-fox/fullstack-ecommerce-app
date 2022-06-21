@@ -34,7 +34,27 @@ async function logoutService() {
 }
 
 async function updateUser(url, userData) {
-    const res = await axios.put(url, userData)
+    let imgUrl
+    let imageName
+
+    if (userData.newImage[0]) {
+        imageName = userData.imageName ? userData.imageName : v1()
+        imgUrl = await uploadImage(userData.newImage[0], imageName)
+    }
+
+    const thingsToUpdate = {
+        name: userData.name,
+        email: userData.email,
+        oldPass: userData.oldPass,
+        newPass: userData.newPass,
+    }
+
+    if (imgUrl) {
+        thingsToUpdate.image = imgUrl
+        thingsToUpdate.imageName = imageName
+    }
+
+    const res = await axios.put(url, thingsToUpdate)
     return res.data
 }
 //auth services

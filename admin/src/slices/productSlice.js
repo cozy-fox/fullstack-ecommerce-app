@@ -8,7 +8,8 @@ const initialState = {
     selected_product_loading: null,
     product_success: false,
     product_error: false,
-    product_message: ''
+    product_message: '',
+    currentSlug: ''
 }
 
 //all products
@@ -71,6 +72,7 @@ const productSlice = createSlice({
             state.product_error = false
             state.product_success = false
             state.product_message = ''
+            state.currentSlug = ''
         },
         productLoading: (state, action) => {
             state.selected_product_loading = action.payload
@@ -119,6 +121,7 @@ const productSlice = createSlice({
                     if (product._id === action.payload.updatedProduct._id) return action.payload.updatedProduct
                     return product
                 })
+                state.currentSlug = action.payload.updatedProduct.slug
                 state.selected_product_loading = null
                 state.product_success = true
                 state.product_message = action.payload.message

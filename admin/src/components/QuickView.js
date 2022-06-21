@@ -9,8 +9,6 @@ export default function QuickView({ selectedProduct, selectedLoading }) {
     const { categories } = useSelector(state => state.categories)
     const dispatch = useDispatch()
 
-    console.log(selectedProduct)
-
     function updateAProduct(data) {
         const { title, price, inStock, productImage, description, latest } = data
 

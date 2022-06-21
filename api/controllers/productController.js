@@ -43,6 +43,17 @@ export const deleteProduct = asyncHandler(async (req, res) => {
 // @access Private
 export const updateProduct = asyncHandler(async (req, res) => {
     const { slug } = req.params
-    const updatedProduct = await Product.findOneAndUpdate({ slug }, { $set: req.body }, { new: true })
+    const { title, price, inStock, productImage, description, latest } = req.body
+
+    let product = await Product.findOne({ slug })
+
+    product.title = title
+    product.price = price
+    product.inStock = inStock
+    product.description = description
+    product.latest = latest
+    if (productImage) product.productImage = productImage
+
+    const updatedProduct = await product.save()
     res.status(200).json({ updatedProduct, message: 'Successfully updated' })
 })

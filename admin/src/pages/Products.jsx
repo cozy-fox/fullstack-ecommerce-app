@@ -8,12 +8,14 @@ import { toast } from 'react-toastify'
 import { productReset, newProduct } from '../slices/productSlice'
 import Product from '../components/Product'
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom'
 
 export default function Products() {
     const { products, product_loading, product_success, product_error, product_message, create_product_loading, selected_product_loading } = useSelector(state => state.product)
     const { categories } = useSelector(state => state.categories)
     const { register, handleSubmit, reset } = useForm();
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (product_success) {
@@ -22,7 +24,7 @@ export default function Products() {
         }
         if (product_error) toast(product_message, { type: 'error', autoClose: 2000 })
         if (product_success || product_error) dispatch(productReset())
-    }, [product_message, product_success, product_error, dispatch, reset])
+    }, [product_message, product_success, product_error, dispatch, reset, navigate])
 
 
     async function createProduct(data) {
