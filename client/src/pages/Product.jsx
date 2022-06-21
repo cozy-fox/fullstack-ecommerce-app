@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useFetch } from '../hooks/fetchData'
 import Loader from '../components/Loader'
 import { useWishlist } from '../hooks/wishlist'
 import SecTitle from '../components/SecTitle'
 import Error from '../components/Error'
 import { useCart } from '../hooks/cart'
+import { useSelector } from 'react-redux'
 
 export default function Product() {
     const { slug } = useParams()
-    const { data: product, isLoading } = useFetch(`/product/${slug}`)
+    const { products, loading } = useSelector(state => state.products)
+    const product = products.find(item => item.slug === slug)
     const { wishlist } = useWishlist()
     const { addToCart } = useCart()
     const [quantity, setQuantity] = useState(1)
@@ -18,7 +19,7 @@ export default function Product() {
         <section className="section py-10">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="quick view" />
-                {isLoading
+                {loading
                     ? <Loader />
                     : product ? (
                         <div className="productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] mx-auto mt-6">
