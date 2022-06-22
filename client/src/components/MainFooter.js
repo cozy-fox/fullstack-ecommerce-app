@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 export default function MainFooter() {
     return (
-        <footer className="footer bg-white mt-auto">
-            <div className="wrapper max-w-screen-xl mx-auto grid grid-cols-4 gap-4 pt-8 pb-9">
+        <footer className="footer bg-white mt-auto pt-8 px-10">
+            <div className="wrapper max-w-screen-xl mx-auto grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 pb-3">
                 <div className="quick">
                     <h3 className="uppercase text-2xl font-semibold text-gray-800">quick links</h3>
                     <Link to="/">

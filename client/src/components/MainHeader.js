@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { UserIcon, SearchIcon, HeartIcon, ShoppingCartIcon } from '@heroicons/react/solid'
+import { UserIcon, SearchIcon, HeartIcon, ShoppingCartIcon, MenuIcon } from '@heroicons/react/solid'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../slices/authSlice'
@@ -13,6 +13,7 @@ const defaultImage = 'https://firebasestorage.googleapis.com/v0/b/fullstack-ecom
 
 export default function MainHeader({ user }) {
     const [showUser, setShowUser] = useState(false)
+    const [showMenu, setShowMenu] = useState(false)
     const { wishlist } = useSelector(state => state.wishList)
     const { cartItems } = useSelector(state => state.cart)
     const dispatch = useDispatch()
@@ -33,31 +34,23 @@ export default function MainHeader({ user }) {
     }
 
     return (
-        <header className="header py-6 bg-white shadow-md sticky top-0 left-0 z-50">
-            <div className="wrapper max-w-screen-xl mx-auto flex justify-between items-center">
+        <header className="header py-6 px-10 bg-white shadow-md sticky top-0 left-0 z-50">
+            <div className="wrapper relative max-w-screen-xl mx-auto flex justify-between flex-col gap-4 sm:gap-0 sm:flex-row items-center">
                 <Link to="/">
                     <h2 className="text-gray-600 text-3xl font-normal cursor-pointer">Groco<span className="text-green-500">.</span></h2>
                 </Link>
 
-                <nav className="space-x-6">
-                    <Link to="/">
-                        <button className="text-gray-500 text-2xl hover:text-green-600 hover:underline font-normal">home</button>
-                    </Link>
-                    <Link to="/shop">
-                        <button className="text-gray-500 text-2xl hover:text-green-600 hover:underline font-normal">shop</button>
-                    </Link>
-                    <Link to="/orders">
-                        <button className="text-gray-500 text-2xl hover:text-green-600 hover:underline font-normal">orders</button>
-                    </Link>
-                    <Link to="/about">
-                        <button className="text-gray-500 text-2xl hover:text-green-600 hover:underline font-normal">about</button>
-                    </Link>
-                    <Link to="/contact">
-                        <button className="text-gray-500 text-2xl hover:text-green-600 hover:underline font-normal">contact</button>
-                    </Link>
+                <nav className={`nav__style ${showMenu ? 'block sm:hidden' : 'hidden sm:block'}`}>
+                    <button onPointerDown={() => navigate("/")} className="navBtn__style sm:mb-0 mb-3">home</button>
+                    <button onPointerDown={() => navigate("/shop")} className="navBtn__style sm:mb-0 mb-3">shop</button>
+                    <button onPointerDown={() => navigate("/orders")} className="navBtn__style sm:mb-0 mb-3">orders</button>
+                    <button onPointerDown={() => navigate("/about")} className="navBtn__style sm:mb-0 mb-3">about</button>
+                    <button onPointerDown={() => navigate("/contact")} className="navBtn__style">contact</button>
                 </nav>
 
                 <div className="icons flex gap-4 items-center">
+                    <MenuIcon onBlur={() => setShowMenu(false)} tabIndex={1} onClick={() => setShowMenu(state => !state)} className="w-9 h-9 fill-gray-500 cursor-pointer hover:fill-green-500 transition-colors sm:hidden" />
+
                     <Link to="/search">
                         <SearchIcon className="w-9 h-9 fill-gray-500 cursor-pointer hover:fill-green-500 transition-colors" />
                     </Link>
