@@ -15,7 +15,7 @@ export default function Order({ order }) {
     }
 
     return (
-        <div className="order w-[40rem] bg-white border-2 border-gray-700 border-solid rounded-lg py-4 px-3">
+        <div className="order w-[40rem] max-w-[100%] bg-white border-2 border-gray-700 border-solid rounded-lg py-4 px-3">
             <p className="text-gray-500 text-xl font-medium mb-3">
                 user id:
                 <span className="text-green-500"> {order.userId}</span>
@@ -66,7 +66,7 @@ export default function Order({ order }) {
                 <option value="Rejected">Rejected</option>
             </select>
 
-            <div className="flex gap-4 mt-5">
+            <div className="flex flex-col sm:flex-row gap-4 mt-5">
                 <button onClick={updateClientsOrder} className="flex-grow py-4 w-full bg-yellow-500 btn__style cursor-pointer capitalize">update</button>
                 <button onClick={deleteClientsOrder} className="flex-grow py-4 w-full bg-red-600 btn__style cursor-pointer capitalize">delete</button>
             </div>

@@ -48,7 +48,7 @@ export default function Profile() {
     return (
         <SecLayout>
             <SecTitle name="update profile" />
-            <form className="reviews mt-6 w-[60rem] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(updateProfile)}>
+            <form className="reviews mt-6 w-[60rem] max-w-[100%] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(updateProfile)}>
                 <img src={user.image ? user.image : defaultImage} alt="" className="h-56 w-56 rounded-full object-cover mx-auto" />
                 <div className="fields grid grid-cols-2 gap-4 mt-6">
 

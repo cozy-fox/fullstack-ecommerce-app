@@ -55,8 +55,8 @@ export default function Products() {
 
                 <SecTitle name="add new product" />
 
-                <form className="reviews mt-6 w-[60rem] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(createProduct)}>
-                    <div className="fields grid grid-cols-2 gap-4">
+                <form className="reviews mt-6 w-[60rem] max-w-[100%] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(createProduct)}>
+                    <div className="fields grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                         <input {...register("title", { required: true })} type="text" placeholder="enter product name" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
 
@@ -66,7 +66,7 @@ export default function Products() {
 
                         <input {...register("productImage")} type="file" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-1 text-xl text-gray-800" />
 
-                        <div className="selectCategories col-span-2 flex flex-wrap gap-3 items-center border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800">
+                        <div className="selectCategories sm:col-span-2 flex flex-wrap gap-3 items-center border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800">
                             {
                                 categories.map(category => {
                                     return (
@@ -83,7 +83,7 @@ export default function Products() {
                             </div>
                         </div>
 
-                        <textarea {...register("description")} className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg col-span-2 p-3 text-xl text-gray-800 h-80 resize-none" />
+                        <textarea {...register("description")} className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg sm:col-span-2 p-3 text-xl text-gray-800 h-80 resize-none" />
 
                     </div>
 
@@ -101,7 +101,7 @@ export default function Products() {
                 {product_loading
                     ? <Loader />
                     : products.length ? (
-                        <div className="grid grid-cols-4 gap-6 mt-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                             {
                                 products.map(product => (
                                     <Product key={product._id} product={product} selectedLoading={selected_product_loading} />

@@ -9,7 +9,7 @@ export default function Message({ message }) {
     }
 
     return (
-        <div className="border-2 border-gray-800 border-solid rounded-lg p-6 w-[30rem] bg-white">
+        <div className="border-2 border-gray-800 border-solid rounded-lg p-6 w-[30rem] max-w-[100%] bg-white">
             <p className="text-gray-500 text-xl font-medium mb-3">
                 user id:
                 <span className="text-green-500"> {message.userId}</span>

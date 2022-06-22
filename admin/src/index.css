@@ -8,6 +8,14 @@
   .btn__style {
     @apply text-white rounded-lg text-2xl font-normal hover:bg-gray-600;
   }
+
+  .nav__style {
+    @apply sm:space-x-6 sm:mt-0 sm:static sm:top-0 sm:left-0 sm:bg-none sm:border-0 sm:rounded-none sm:w-auto sm:p-0 sm:shadow-none mt-8 shadow-xl absolute top-full left-0 bg-white border-2 border-solid border-gray-800 rounded-lg w-full p-6;
+  }
+
+  .navBtn__style {
+    @apply text-gray-500 text-2xl hover:text-green-600 hover:underline font-normal sm:inline-block sm:border-l-0 sm:px-0 block border-0 border-l-2 border-solid border-green-600 px-4;
+  }
 }
 
 :root {
@@ -56,7 +64,7 @@ body {
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 50%;
   overflow-x: hidden;
   scroll-behavior: smooth;
   scroll-padding-top: 6.5rem;
@@ -70,5 +78,17 @@ html {
 @keyframes fadeUp {
   100% {
     margin-top: 2.5rem;
+  }
+}
+
+@media (min-width: 991px) {
+  html {
+    font-size: 55%;
+  }
+}
+
+@media (min-width: 1250px) {
+  html {
+    font-size: 62.5%;
   }
 }

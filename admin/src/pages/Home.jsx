@@ -32,7 +32,7 @@ export default function Home() {
     return (
         <SecLayout>
             <SecTitle name="dashboard" />
-            <div className="pages grid grid-cols-4 gap-6 mt-7">
+            <div className="pages grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-7">
 
                 <div className="border-2 border-solid border-gray-800 rounded-lg p-4 bg-white">
                     <h2 className="text-5xl text-gray-800 text-center pt-1 pb-3 font-semibold">${pendingAmount}/-</h2>

@@ -17,7 +17,7 @@ export default function User({ user, selectedLoading }) {
     }
 
     return (
-        <div className="border-2 border-gray-800 border-solid rounded-lg p-6 w-[30rem] bg-white text-center">
+        <div className="border-2 border-gray-800 border-solid rounded-lg p-6 w-[30rem] max-w-[100%] bg-white text-center">
             <img src={user.image ? user.image : defaultImage} alt="" className="w-44 h-44 rounded-full mx-auto object-cover mb-4" />
             <p className="text-gray-500 text-xl font-medium mb-3">
                 user id:
