@@ -115,10 +115,10 @@ export default function Checkout() {
     }
 
     return (
-        <section className="section py-10">
+        <section className="section p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
 
-                <div className="cartProducts flex gap-5 justify-center">
+                <div className="cartProducts flex flex-wrap gap-5 justify-center">
                     {cartItems.map(item => (
                         <div key={item._id} className="bg-white border-2 border-gray-800 border-solid rounded-lg py-2 px-5 font-medium text-gray-600 text-xl">
                             {item.productName}
@@ -132,12 +132,12 @@ export default function Checkout() {
                     <span className="text-red-500"> ${totalPrice}/ -</span>
                 </div>
 
-                <form className="bg-white w-[85rem] border-2 border-gray-700 border-solid rounded-lg p-4 mx-auto" onSubmit={handleSubmit(paymentProcess)}>
-                    <h1 className="rounded-lg py-4 bg-gray-800 uppercase text-white text-center text-4xl font-semibold">
+                <form className="bg-white w-[85rem] max-w-[100%] border-2 border-gray-700 border-solid rounded-lg p-4 mx-auto" onSubmit={handleSubmit(paymentProcess)}>
+                    <h1 className="rounded-lg py-4 bg-gray-800 uppercase text-white text-center text-3xl sm:text-4xl font-semibold">
                         place your order
                     </h1>
 
-                    <div className="fields grid grid-cols-2 gap-4 mt-6">
+                    <div className="fields grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                         <div className="inputField">
                             <label htmlFor="name" className="text-gray-500 font-medium text-xl mb-2 inline-block">your name :</label>
                             <input {...register("name", { required: true })} type="text" id="name" placeholder="enter your name" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800 focus:border-green-500" />

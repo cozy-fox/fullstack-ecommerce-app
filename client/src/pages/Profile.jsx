@@ -45,12 +45,12 @@ export default function Profile({ user }) {
     }
 
     return (
-        <section className="section py-10">
+        <section className="section p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="update profile" />
-                <form className="reviews mt-6 w-[60rem] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(updateProfile)}>
+                <form className="reviews mt-6 w-[60rem] max-w-[100%] border-2 border-gray-700 border-solid rounded-lg p-5 mx-auto bg-white" onSubmit={handleSubmit(updateProfile)}>
                     <img src={user.image ? user.image : defaultImage} alt="" className="h-56 w-56 rounded-full object-cover mx-auto" />
-                    <div className="fields grid grid-cols-2 gap-4 mt-6">
+                    <div className="fields grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
 
                         <div className="inputField">
                             <label htmlFor="username" className="text-gray-500 font-medium text-xl mb-2 inline-block">username :</label>
@@ -86,7 +86,7 @@ export default function Profile({ user }) {
                     {
                         loading
                             ? <Loader customCss="mb-4" /> :
-                            <div className="flex gap-4 mt-5">
+                            <div className="flex flex-col sm:flex-row gap-4 mt-5">
                                 <input type="submit" value="Update Profile" className="flex-grow py-4 w-full bg-green-600 btn__style cursor-pointer" />
                                 <button onClick={() => navigate('/')} className="flex-grow py-4 w-full bg-yellow-600 btn__style cursor-pointer capitalize">cancel</button>
                             </div>

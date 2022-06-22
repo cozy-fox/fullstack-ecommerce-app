@@ -60,7 +60,7 @@ export default function MainHeader({ user }) {
                                 <>
                                     <div className="relative">
                                         <UserIcon onBlur={() => setShowUser(false)} tabIndex={1} onClick={() => setShowUser(state => !state)} className="w-9 h-9 fill-gray-500 cursor-pointer hover:fill-green-500 transition-colors" />
-                                        <div className={`${showUser ? 'block' : 'hidden'} userProfile w-[26rem] bg-white p-6 absolute top-full -left-40 border-2 border-gray-600 border-solid rounded-xl overflow-hidden`}>
+                                        <div className={`${showUser ? 'block' : 'hidden'} userProfile w-[26rem] bg-white p-6 absolute top-full right-0 border-2 border-gray-600 border-solid rounded-xl overflow-hidden`}>
                                             <img src={user.image ? user.image : defaultImage} alt="" className="userAvatar w-40 h-40 rounded-full object-cover mx-auto" />
                                             <h3 className="text-2xl text-gray-500 font-normal text-center py-4">{user.name}</h3>
                                             <button onPointerDown={() => navigate('/profile')} className="w-full bg-green-500 btn__style mb-4">Update Profile</button>

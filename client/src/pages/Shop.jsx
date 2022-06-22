@@ -21,11 +21,11 @@ export default function Shop() {
     }
 
     return (
-        <section className="section py-10">
+        <section className="section p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
 
                 <div className="categories">
-                    <div className="products grid grid-cols-5 gap-6 mb-10">
+                    <div className="products grid grid-cols-3 sm:grid-cols-5 gap-6 mb-10">
                         <button onClick={() => selectCat('all')} className={`${active === 'all' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'} border-2 border-gray-800 border-solid rounded-lg py-4 text-center hover:bg-gray-700 hover:text-white text-xl font-semibold`}>
                             All
                         </button>
@@ -43,7 +43,7 @@ export default function Shop() {
                 {loading
                     ? <Loader />
                     : (
-                        <div className="products grid grid-cols-4 gap-6 mt-6">
+                        <div className="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                             {products.map(product => {
                                 if (product.categories.includes(currentCategory)) {
                                     return <Food key={product._id} product={product} wishlist={wishlist} addToCart={addToCart} />

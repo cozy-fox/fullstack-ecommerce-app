@@ -13,7 +13,7 @@ export default function Wishproduct({ wishProduct, addToCart }) {
     }
 
     return (
-        <div className="productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[35rem]">
+        <div className="productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[35rem] max-w-[100%]">
             <div className="productImage relative w-full h-80">
                 <button onClick={() => deleteProduct(wishProduct._id)} className="absolute group top-0 left-0 bg-red-500 py-2 px-4 rounded-lg cursor-pointer z-10 hover:bg-gray-700">
                     <XIcon className="w-7 h-7 fill-white" />

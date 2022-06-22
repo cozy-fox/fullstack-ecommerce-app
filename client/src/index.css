@@ -84,7 +84,7 @@ html {
 .banner {
     background: url('home-bg.jpg') no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: left;
 }
 
 
@@ -131,6 +131,10 @@ html {
 @media (min-width: 991px) {
     html {
         font-size: 55%;
+    }
+
+    .banner {
+        background-position: center;
     }
 }
 

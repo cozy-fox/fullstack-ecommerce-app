@@ -5,10 +5,10 @@ import Review from '../components/Review'
 
 export default function About() {
   return (
-    <section className="section py-10">
+    <section className="section p-10">
       <div className="wrapper max-w-screen-xl mx-auto">
 
-        <div className="grid grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
 
           <div className="contactUs">
             <img src="/images/about-img-1.png" alt="" className="h-[30rem] object-cover mx-auto" />
@@ -40,7 +40,7 @@ export default function About() {
 
         <div className="reviews mt-20">
           <SecTitle name="clients reviews" />
-          <div className="clientsReviews grid grid-cols-4 gap-6 mt-6">
+          <div className="clientsReviews grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
             <Review image="/images/pic-1.png" />
             <Review image="/images/pic-2.png" />
             <Review image="/images/pic-3.png" />

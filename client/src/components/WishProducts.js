@@ -27,7 +27,7 @@ export default function WishProducts() {
     }
 
     return (
-        <section className="py-12">
+        <section className="p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="products added" />
                 {loading
@@ -45,7 +45,7 @@ export default function WishProducts() {
                     )
                 }
 
-                <div className="grand-price bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] mx-auto mt-7">
+                <div className="grand-price bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] max-w-[100%] mx-auto mt-7">
                     <div className="total text-gray-600 font-medium text-3xl text-center">
                         grand total :
                         <span className="text-red-500"> ${totalPrice}/ -</span>

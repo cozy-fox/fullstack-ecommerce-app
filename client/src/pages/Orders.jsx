@@ -7,7 +7,7 @@ export default function Order() {
     const { orders, order_loading } = useSelector(state => state.order)
 
     return (
-        <section className="section py-10">
+        <section className="section p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="placed orders" />
 
@@ -17,7 +17,7 @@ export default function Order() {
                             <div className="allOrders flex gap-6 flex-wrap my-6">
                                 {
                                     orders.map(order => (
-                                        <div key={order._id} className="order w-[60rem] flex-grow bg-white border-2 border-gray-700 border-solid rounded-lg py-4 px-3">
+                                        <div key={order._id} className="order w-[50rem] max-w-[100%] flex-grow bg-white border-2 border-gray-700 border-solid rounded-lg py-4 px-3">
                                             <p className="text-gray-500 text-xl font-medium mb-3">
                                                 placed on:
                                                 <span className="text-green-500"> {new Date(order.createdAt).toLocaleDateString()}</span>

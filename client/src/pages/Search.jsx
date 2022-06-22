@@ -27,9 +27,9 @@ export default function Search() {
     }
 
     return (
-        <section className="section py-10">
+        <section className="section p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
-                <form className="flex gap-4 items-center">
+                <form className="flex gap-4 items-center max-w-[100%]">
                     <input onChange={e => setValue(e.target.value)} type="text" placeholder="Search products..." className="border-gray-800 border-solid border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
                     <input onClick={showProducts} type="submit" value="Search" className={`py-4 px-8 btn__style cursor-pointer ${value ? 'bg-green-600' : 'bg-green-400 pointer-events-none'}`} />
                 </form>

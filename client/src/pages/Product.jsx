@@ -16,13 +16,13 @@ export default function Product() {
     const [quantity, setQuantity] = useState(1)
 
     return (
-        <section className="section py-10">
+        <section className="section p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="quick view" />
                 {loading
                     ? <Loader />
                     : product ? (
-                        <div className="productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] mx-auto mt-6">
+                        <div className="productBox bg-white border-2 border-gray-800 border-solid rounded-lg p-4 w-[38rem] max-w-[100%] mx-auto mt-6">
                             <div className="productImage relative w-full h-80">
                                 <div className="price absolute top-0 left-0 bg-red-500 text-white text-lg p-2 rounded-lg">
                                     $<span className="text-white text-2xl font-medium px-1">{product.price}</span>/-

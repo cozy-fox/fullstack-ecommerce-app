@@ -26,10 +26,10 @@ export default function Contact() {
     }
 
     return (
-        <section className="section py-10">
+        <section className="section p-10">
             <div className="wrapper max-w-screen-xl mx-auto">
                 <SecTitle name="get in touch" />
-                <form className="mt-6 w-[42rem] mx-auto bg-white border-2 border-gray-800 border-solid rounded-lg p-5" onSubmit={handleSubmit(send)}>
+                <form className="mt-6 w-[42rem] max-w-[100%] mx-auto bg-white border-2 border-gray-800 border-solid rounded-lg p-5" onSubmit={handleSubmit(send)}>
                     <input {...register("name", { required: true })} type="text" placeholder="enter your name" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800" />
                     <input {...register("email", { required: true })} type="email" placeholder="enter your email" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800 mt-5" />
                     <input {...register("number", { required: true })} type="number" placeholder="enter your number" className="border-gray-800 border-solid bg-gray-100 border-2 rounded-lg w-full p-3 text-xl text-gray-800 mt-5" />
