@@ -1,4 +1,4 @@
-import axios from '../axiosConfig'
+import axios from 'axios'
 
 async function allProducts(url) {
     const res = await axios.get(url)

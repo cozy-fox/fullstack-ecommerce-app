@@ -13,7 +13,6 @@ import messageRouter from './routes/messageRoutes.js'
 import cartRouter from './routes/cartRoutes.js'
 import checkoutRouter from './routes/checkoutRoutes.js'
 import orderRouter from './routes/orderRoutes.js'
-import session from 'express-session'
 
 dotenv.config()
 const app = express()
@@ -31,24 +30,7 @@ async function connect() {
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cors({
-    credentials: true,
-    origin: ["https://client-five-blue.vercel.app"]
-}))
-
-app.set("trust proxy", 1);
-
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET || 'Super Secret (change it)',
-        resave: true,
-        saveUninitialized: false,
-        cookie: {
-            sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
-            secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
-        }
-    })
-);
+app.use(cors())
 
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)

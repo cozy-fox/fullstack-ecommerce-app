@@ -1,4 +1,4 @@
-import axios from '../axiosConfig'
+import axios from 'axios'
 
 async function addToWishlist(url, productData) {
     const res = await axios.post(url, productData)
