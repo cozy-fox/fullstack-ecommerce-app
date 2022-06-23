@@ -37,7 +37,7 @@ app.set("trust proxy", 1);
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET || 'session',
         cookie: {
             sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
             maxAge: 60000000,
