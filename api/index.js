@@ -13,7 +13,6 @@ import messageRouter from './routes/messageRoutes.js'
 import cartRouter from './routes/cartRoutes.js'
 import checkoutRouter from './routes/checkoutRoutes.js'
 import orderRouter from './routes/orderRoutes.js'
-import session from 'express-session'
 
 dotenv.config()
 const app = express()
@@ -32,22 +31,6 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors())
-
-app.set("trust proxy", 1);
-
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET || 'session',
-        cookie: {
-            sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
-            maxAge: 60000000,
-            secure: process.env.NODE_ENV === "production",
-        },
-        resave: true,
-        saveUninitialized: false,
-        ttl: 60 * 60 * 24 * 30
-    })
-);
 
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
