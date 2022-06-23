@@ -4,7 +4,7 @@ import uploadImage from '../utils/uploadImg'
 
 async function loginService(userData) {
     const { email, pass } = userData
-    const res = await axios.post('/auth/login', { email, pass })
+    const res = await axios.post('/auth/login', { email, pass }, { withCredentials: true })
     return res.data
 }
 
