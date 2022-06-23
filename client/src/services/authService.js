@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../axiosConfig'
 import { v1 } from 'uuid'
 import uploadImage from '../utils/uploadImg'
 

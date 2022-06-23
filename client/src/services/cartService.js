@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../axiosConfig'
 
 async function addInCart(url, data) {
     const res = await axios.post(url, data)

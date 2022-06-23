@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../axiosConfig'
 
 async function sendMessage(url, msgData) {
     const res = await axios.post(url, msgData)

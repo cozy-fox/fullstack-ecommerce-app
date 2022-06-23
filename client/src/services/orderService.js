@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../axiosConfig'
 
 async function createOrder(url, data) {
     const res = await axios.post(url, data)

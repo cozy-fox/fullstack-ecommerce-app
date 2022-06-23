@@ -15,6 +15,7 @@ export const allOrders = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             return await services.orders(`/order`)
+            // return await services.orders(`https://mern-grocery.herokuapp.com/api/order`)
         } catch (err) {
             const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString()
             return thunkAPI.rejectWithValue(message)
