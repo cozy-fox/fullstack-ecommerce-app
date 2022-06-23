@@ -37,12 +37,14 @@ app.set("trust proxy", 1);
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || 'Super Secret (change it)',
-        resave: true,
-        saveUninitialized: false,
+        name: "random_session",
+        secret: "yryGGeugidx34otGDuSF5sD9R8g0Gü3r8",
+        resave: false,
+        saveUninitialized: true,
         cookie: {
-            sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
-            secure: process.env.NODE_ENV === "production", // must be true if sameSite='none'
+            path: "/",
+            secure: true,
+            httpOnly: true
         }
     })
 );
