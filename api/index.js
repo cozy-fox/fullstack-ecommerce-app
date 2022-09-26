@@ -69,12 +69,13 @@ app.get("/start", (req, res) => {
 
 // app.use("/admin", express.static(path.join(__dirname, "./admin/build")))
 
-// app.use(express.static(path.join(__dirname, "./client/build")))
+app.use("/client", express.static(path.join(__dirname, "./client/build")))
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "./client/build", "index.html"))
 // })
 
+// app.use(express.static(path.join(__dirname, "./client/build")))
 app.use(express.static(path.join(__dirname, "./admin/build")))
 
 app.get("*", (req, res) => {
