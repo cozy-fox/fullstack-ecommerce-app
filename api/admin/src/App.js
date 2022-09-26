@@ -1,26 +1,26 @@
-import { useEffect } from 'react'
-import Home from './pages/Home'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Layout from './pages/Layout';
-import Login from './pages/Login';
-import { useSelector, useDispatch } from 'react-redux';
-import Protected from './pages/Protected';
-import { allOrders } from './slices/orderSlice'
-import { allUsers } from './slices/userSlice'
-import { usersMessages } from './slices/messageSlice'
-import { allProducts } from './slices/productSlice'
-import { allCategories } from './slices/categorySlice'
-import Orders from './pages/Orders';
-import Users from './pages/Users';
-import Messages from './pages/Messages';
-import Products from './pages/Products';
-import Update from './pages/Update';
-import Profile from './pages/Profile';
+import { useEffect } from "react"
+import Home from "./pages/Home"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import Layout from "./pages/Layout"
+import Login from "./pages/Login"
+import { useSelector, useDispatch } from "react-redux"
+import Protected from "./pages/Protected"
+import { allOrders } from "./slices/orderSlice"
+import { allUsers } from "./slices/userSlice"
+import { usersMessages } from "./slices/messageSlice"
+import { allProducts } from "./slices/productSlice"
+import { allCategories } from "./slices/categorySlice"
+import Orders from "./pages/Orders"
+import Users from "./pages/Users"
+import Messages from "./pages/Messages"
+import Products from "./pages/Products"
+import Update from "./pages/Update"
+import Profile from "./pages/Profile"
 
 function App() {
-  const { user } = useSelector(state => state.auth)
+  const { user } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -35,10 +35,8 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-
+      <Router basename="/admin">
         <Routes>
-
           <Route path="/login" element={<Login />} />
 
           <Route path="/" element={<Layout user={user} />}>
@@ -99,14 +97,12 @@ function App() {
               }
             />
           </Route>
-
         </Routes>
-
       </Router>
 
       <ToastContainer position="top-right" newestOnTop />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
