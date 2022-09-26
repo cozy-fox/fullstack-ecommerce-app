@@ -67,7 +67,8 @@ app.get("/start", (req, res) => {
   res.status(200).json({ message: "Hello from API" })
 })
 
-app.use("/admin", express.static(path.join(__dirname, "./admin/build")))
+app.use("/myAdmin", express.static(path.join(__dirname, "./admin/build")))
+
 app.use(express.static(path.join(__dirname, "./client/build")))
 
 app.get("*", (req, res) => {
