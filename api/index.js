@@ -39,13 +39,13 @@ app.use(express.urlencoded({ extended: false }))
 app.use(
   cors({
     credentials: true,
-    origin: function (origin, callback) {
-      if (ORIGINS.indexOf(origin) !== -1) {
-        callback(null, true)
-      } else {
-        callback(new Error("Not allowed by CORS"))
-      }
-    },
+    // origin: function (origin, callback) {
+    //   if (ORIGINS.indexOf(origin) !== -1) {
+    //     callback(null, true)
+    //   } else {
+    //     callback(new Error("Not allowed by CORS"))
+    //   }
+    // },
   })
 )
 
@@ -68,10 +68,10 @@ app.get("/start", (req, res) => {
 })
 
 app.use("/admin", express.static(path.join(__dirname, "/admin/build")))
-app.use(express.static(path.join(__dirname, "/client/build")))
+app.use(express.static(path.join(__dirname, "./client/build")))
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/build", "index.html"))
+  res.sendFile(path.join(__dirname, "./client/build", "index.html"))
 })
 
 app.use(errorHandler)
